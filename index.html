@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Palmieri ABNT - Com Prévia</title>
+    <title>Palmieri ABNT - Via Impressão (100% confiável)</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -106,7 +106,7 @@
 <div class="container">
     <div class="card">
         <h1>📄 Palmieri ABNT</h1>
-        <div class="sub">Formatação automática com pré-visualização</div>
+        <div class="sub">Formatação ABNT com geração via impressão (PDF 100% fiel)</div>
 
         <div class="drop-area" id="dropArea">
             📂 Arraste seu arquivo .docx aqui ou clique para selecionar
@@ -132,27 +132,25 @@
             <div id="previewContent" class="preview-area"></div>
         </div>
 
-        <!-- Lista de títulos detectados (opcional, mas útil) -->
+        <!-- Lista de títulos detectados -->
         <div id="titulosBox" class="hidden" style="margin-top: 16px;">
-            <strong>📑 Títulos detectados:</strong>
+            <strong>📑 Títulos detectados (usados no sumário):</strong>
             <div id="titulosList" style="background:#fafafa; border-radius:12px; padding:12px; margin-top:8px; max-height:150px; overflow:auto;"></div>
             <button id="buscarTitulosBtn" class="btn btn-secondary" style="margin-top:8px; padding:6px 12px; font-size:12px;">🔍 Buscar mais títulos</button>
         </div>
 
         <div style="display: flex; gap: 12px; margin-top: 20px;">
-            <button id="gerarPdfBtn" class="btn" disabled>✨ Gerar PDF</button>
+            <button id="gerarPdfBtn" class="btn" disabled>✨ Gerar PDF (via impressão)</button>
             <button id="limparBtn" class="btn btn-secondary">🗑️ Limpar</button>
         </div>
 
         <div id="statusMsg" class="status hidden"></div>
         <div id="loadingMsg" class="hidden" style="margin-top:16px; text-align:center;"><span class="loader"></span> Processando...</div>
     </div>
-    <div style="text-align:center; font-size:12px; color:#999;">⚡ Processamento local – nenhum dado sai do seu computador</div>
+    <div style="text-align:center; font-size:12px; color:#999;">⚡ O PDF será aberto em uma nova aba com o diálogo de impressão. Escolha "Salvar como PDF".</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
     (function(){
         // Elementos
@@ -191,7 +189,7 @@
 
         clearBtn.addEventListener('click', limparTudo);
         limparBtn.addEventListener('click', limparTudo);
-        gerarBtn.addEventListener('click', gerarPDF);
+        gerarBtn.addEventListener('click', gerarPDFViaImpressao);
         buscarTitulosBtn.addEventListener('click', extrairTitulosDoTexto);
 
         function mostrarStatus(texto, tipo) {
@@ -262,30 +260,32 @@
         function extrairTitulosDoTexto() {
             if(!textoExtraido) return;
             const linhas = textoExtraido.split(/\r?\n/);
-            const palavrasChave = ['INTRODUÇÃO','OBJETIVO','METODOLOGIA','CONCLUSÃO','REFERÊNCIAS','BLOCO','QUESTÃO','RESPOSTA','ANEXO'];
+            const palavrasChave = ['INTRODUÇÃO','OBJETIVO','METODOLOGIA','CONCLUSÃO','REFERÊNCIAS','BLOCO','QUESTÃO','RESPOSTA','ANEXO','RESUMO'];
             const novosTitulos = [];
+            const textosVistos = new Set();
             for(let linha of linhas) {
                 linha = linha.trim();
                 if(linha.length < 3 || linha.length > 150) continue;
+                if(textosVistos.has(linha)) continue;
                 const upper = linha.toUpperCase();
                 const temKeyword = palavrasChave.some(p => upper.includes(p));
                 const temNumero = /^\d+\./.test(linha);
-                const temNegrito = linha.includes('**') || linha.includes('*'); // simulação, pois no texto puro não há negrito
                 if(temKeyword || temNumero) {
-                    let nivel = (temNumero && linha.match(/\./g)?.length === 1) ? 1 : 2;
+                    let nivel = (temNumero && (linha.match(/\./g) || []).length === 1) ? 1 : 2;
                     novosTitulos.push({ texto: linha, nivel });
+                    textosVistos.add(linha);
                 }
             }
             if(novosTitulos.length > 0) {
                 titulos = novosTitulos;
-                titulosList.innerHTML = titulos.map(t => `<div style="margin-bottom:6px;">▪️ Nível ${t.nivel}: ${t.texto.substring(0,80)}</div>`).join('');
+                titulosList.innerHTML = titulos.map(t => `<div style="margin-bottom:6px;">▪️ Nível ${t.nivel}: ${escapeHtml(t.texto.substring(0,80))}</div>`).join('');
                 titulosBox.classList.remove('hidden');
             } else {
                 titulosBox.classList.add('hidden');
             }
         }
 
-        async function gerarPDF() {
+        function gerarPDFViaImpressao() {
             if(!arquivoAtual || !textoExtraido) {
                 mostrarStatus('Nenhum documento carregado.', 'error');
                 return;
@@ -300,83 +300,93 @@
             gerarBtn.disabled = true;
 
             try {
-                // Construir o HTML do documento ABNT
-                const titulosHtml = gerarSumarioHtml();
-                const conteudoHtml = textoExtraido.split(/\r?\n/).map(par => `<p>${escapeHtml(par)}</p>`).join('');
+                // Construir o HTML do documento ABNT completo
+                const sumarioHtml = gerarSumarioHtml();
+                // Converter texto puro em parágrafos ABNT (recuo, quebras de linha)
+                const paragrafos = textoExtraido.split(/\r?\n/).filter(p => p.trim().length > 0);
+                const conteudoHtml = paragrafos.map(p => `<p>${escapeHtml(p)}</p>`).join('');
+                
                 const docHtml = `
                     <!DOCTYPE html>
                     <html>
-                    <head><meta charset="UTF-8"><title>${escapeHtml(nomePDF)}</title>
-                    <style>
-                        @page { size: A4; margin: 3cm 2cm 2cm 3cm; }
-                        body { font-family: 'Times New Roman', Arial, sans-serif; font-size: 12pt; line-height: 1.5; text-align: justify; margin: 0; padding: 0; }
-                        h1 { font-size: 14pt; text-align: center; text-transform: uppercase; margin: 20pt 0; }
-                        p { text-indent: 1.25cm; margin: 0 0 6pt; }
-                        .sumario { margin: 20pt 0; }
-                        .sumario h2 { text-align: center; text-transform: uppercase; }
-                        .sumario ul { list-style: none; padding-left: 0; }
-                        .sumario li { margin-bottom: 4pt; }
-                        .page-break { page-break-before: always; }
-                    </style>
+                    <head>
+                        <meta charset="UTF-8">
+                        <title>${escapeHtml(nomePDF)}</title>
+                        <style>
+                            @page { size: A4; margin: 3cm 2cm 2cm 3cm; }
+                            body { 
+                                font-family: 'Times New Roman', Arial, sans-serif; 
+                                font-size: 12pt; 
+                                line-height: 1.5; 
+                                text-align: justify; 
+                                margin: 0; 
+                                padding: 0;
+                            }
+                            h1 { 
+                                font-size: 14pt; 
+                                text-align: center; 
+                                text-transform: uppercase; 
+                                margin: 20pt 0 10pt;
+                            }
+                            h2 {
+                                font-size: 13pt;
+                                text-align: center;
+                                margin: 16pt 0 8pt;
+                            }
+                            p {
+                                text-indent: 1.25cm;
+                                margin: 0 0 6pt;
+                            }
+                            .sumario {
+                                margin: 20pt 0;
+                            }
+                            .sumario h2 {
+                                text-align: center;
+                                text-transform: uppercase;
+                            }
+                            .sumario ul {
+                                list-style: none;
+                                padding-left: 0;
+                            }
+                            .sumario li {
+                                margin-bottom: 4pt;
+                            }
+                            .page-break {
+                                page-break-before: always;
+                            }
+                            table { border-collapse: collapse; width: 100%; margin: 12pt 0; }
+                            th, td { border: 1px solid #000; padding: 6pt; }
+                            img { max-width: 100%; height: auto; display: block; margin: 12pt auto; }
+                            blockquote { margin-left: 4cm; font-size: 10pt; line-height: 1.2; }
+                        </style>
                     </head>
                     <body>
                         <h1>${escapeHtml(nomePDF)}</h1>
-                        <div class="sumario">${titulosHtml}</div>
+                        <div class="sumario">
+                            <h2>SUMÁRIO</h2>
+                            ${sumarioHtml}
+                        </div>
                         <div class="page-break"></div>
                         ${conteudoHtml}
                     </body>
                     </html>
                 `;
 
-                // Criar um elemento temporário para renderizar
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = docHtml;
-                tempDiv.style.position = 'absolute';
-                tempDiv.style.left = '0';
-                tempDiv.style.top = '0';
-                tempDiv.style.width = '210mm';
-                tempDiv.style.background = 'white';
-                tempDiv.style.zIndex = '-1';
-                tempDiv.style.opacity = '0.01';
-                document.body.appendChild(tempDiv);
-
-                // Usar html2canvas + jsPDF
-                const canvas = await html2canvas(tempDiv, { scale: 2, backgroundColor: '#ffffff' });
-                const imgData = canvas.toDataURL('image/png');
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF('p', 'mm', 'a4');
-                const imgWidth = 210; // A4 largura em mm
-                const pageHeight = 297;
-                const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                let position = 0;
-                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                if (imgHeight > pageHeight) {
-                    let remaining = imgHeight - pageHeight;
-                    let offset = pageHeight;
-                    while (remaining > 0) {
-                        pdf.addPage();
-                        pdf.addImage(imgData, 'PNG', 0, -offset, imgWidth, imgHeight);
-                        offset += pageHeight;
-                        remaining -= pageHeight;
-                    }
-                }
-                pdf.save(nomePDF + '.pdf');
-
-                document.body.removeChild(tempDiv);
-                mostrarStatus(`✅ PDF "${nomePDF}.pdf" gerado com sucesso!`, 'success');
+                // Abrir nova aba com o documento e acionar impressão
+                const win = window.open();
+                win.document.write(docHtml);
+                win.document.close();
+                win.focus();
+                // Disparar impressão após um pequeno atraso para garantir que o CSS carregue
+                setTimeout(() => {
+                    win.print();
+                    win.onafterprint = () => { win.close(); };
+                }, 500);
+                
+                mostrarStatus(`✅ Documento aberto. Use "Salvar como PDF" no diálogo de impressão.`, 'success');
             } catch(err) {
                 console.error(err);
-                mostrarStatus('❌ Falha ao gerar PDF. Tente usar "Salvar como PDF" pelo navegador (Ctrl+P).', 'error');
-                // Fallback: abrir janela de impressão
-                const fallbackHtml = `
-                    <html><head><title>${nomePDF}</title>
-                    <style>body { font-family: Arial; margin: 2cm; } p { text-indent: 1.25cm; }</style>
-                    </head><body><h1>${nomePDF}</h1><pre>${escapeHtml(textoExtraido)}</pre></body></html>
-                `;
-                const win = window.open();
-                win.document.write(fallbackHtml);
-                win.document.close();
-                win.print();
+                mostrarStatus('❌ Erro ao preparar o documento: ' + err.message, 'error');
             } finally {
                 loadingDiv.classList.add('hidden');
                 gerarBtn.disabled = false;
@@ -385,7 +395,7 @@
 
         function gerarSumarioHtml() {
             if(titulos.length === 0) return '<p>Nenhum título detectado.</p>';
-            let html = '<h2>SUMÁRIO</h2><ul>';
+            let html = '<ul>';
             for(let t of titulos) {
                 html += `<li style="margin-left:${(t.nivel-1)*20}px">${escapeHtml(t.texto)}</li>`;
             }
@@ -400,8 +410,6 @@
                 if(m === '<') return '&lt;';
                 if(m === '>') return '&gt;';
                 return m;
-            }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-                return c;
             });
         }
     })();
