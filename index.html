@@ -3,325 +3,471 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Palmieri ABNT - Com validação de títulos</title>
+    <title>Palmieri ABNT - Formatação de Documentos</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #FFF8E1;
             min-height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             padding: 20px;
         }
-        .container { max-width: 800px; width: 100%; }
+
+        .container {
+            max-width: 850px;
+            width: 100%;
+        }
+
         .card {
             background: white;
             border-radius: 24px;
             padding: 32px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
         }
-        .header { text-align: center; margin-bottom: 24px; }
-        .header-icon { font-size: 48px; color: #F97316; }
-        .title { font-size: 28px; font-weight: 700; color: #1a1a2e; }
-        .subtitle { color: #666; margin-top: 4px; }
+
+        .header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .header-icon {
+            font-size: 52px;
+            color: #F97316;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-top: 8px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-top: 6px;
+            font-size: 14px;
+        }
+
+        /* Botão Manual */
         .btn-manual {
             background: none;
-            border: 1px solid #ddd;
-            padding: 6px 14px;
-            border-radius: 20px;
+            border: 1.5px solid #e0e0e0;
+            padding: 8px 20px;
+            border-radius: 30px;
             cursor: pointer;
-            margin-top: 12px;
-            font-size: 12px;
+            margin-top: 14px;
+            font-size: 13px;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             transition: all 0.2s;
+            color: #555;
         }
-        .btn-manual:hover { background: #FFF8E1; border-color: #F97316; }
+
+        .btn-manual:hover {
+            background: #FFF8E1;
+            border-color: #F97316;
+            color: #F97316;
+        }
+
+        /* Drop Area */
         .drop-area {
             border: 2px dashed #ccc;
-            border-radius: 16px;
-            padding: 40px;
+            border-radius: 18px;
+            padding: 45px 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.2s;
+            background: #fefefe;
         }
-        .drop-area:hover, .drop-area.drag-over { border-color: #F97316; background: #FFF8E1; }
-        .upload-icon { font-size: 48px; color: #999; }
+
+        .drop-area:hover, .drop-area.drag-over {
+            border-color: #F97316;
+            background: #FFF8E1;
+        }
+
+        .upload-icon {
+            font-size: 52px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        .drop-text {
+            color: #666;
+            margin: 8px 0;
+        }
+
         .btn-outline {
             background: none;
-            border: 1px solid #ccc;
-            padding: 10px 20px;
-            border-radius: 8px;
+            border: 1.5px solid #ddd;
+            padding: 10px 24px;
+            border-radius: 40px;
             cursor: pointer;
             margin-top: 12px;
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            font-size: 14px;
             transition: all 0.2s;
         }
-        .btn-outline:hover { background: #FFF8E1; border-color: #F97316; }
+
+        .btn-outline:hover {
+            background: #FFF8E1;
+            border-color: #F97316;
+        }
+
         .btn-primary {
             width: 100%;
             background: #F97316;
             border: none;
             padding: 14px;
-            border-radius: 12px;
-            font-weight: 600;
+            border-radius: 40px;
+            font-weight: 700;
             font-size: 16px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            margin-top: 16px;
+            gap: 10px;
+            margin-top: 20px;
             transition: all 0.2s;
+            color: white;
         }
-        .btn-primary:hover { background: #EA580C; }
+
+        .btn-primary:hover {
+            background: #EA580C;
+            transform: scale(1.01);
+        }
+
+        .btn-secondary {
+            background: #27272A;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
         .file-info {
             background: #E8F5E9;
-            padding: 12px;
-            border-radius: 12px;
+            padding: 14px;
+            border-radius: 14px;
             margin-top: 16px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
         }
-        .hidden { display: none; }
+
+        .hidden {
+            display: none !important;
+        }
+
         .progress {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 14px;
             padding: 20px;
             color: #F97316;
+            background: #FFF8E1;
+            border-radius: 40px;
+            margin-top: 16px;
         }
-        .spinning { animation: spin 1s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .spinning {
+            animation: spin 1s linear infinite;
+            font-size: 22px;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         .error-msg {
             background: #FFEBEE;
             color: #EF5350;
             padding: 12px;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-top: 16px;
             text-align: center;
+            font-size: 14px;
         }
+
         .success-msg {
             background: #E8F5E9;
             color: #4CAF50;
             padding: 12px;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-top: 16px;
             text-align: center;
-        }
-        .input-group { margin: 16px 0; }
-        .input-group label { display: block; margin-bottom: 6px; font-weight: 500; }
-        .input-group input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
             font-size: 14px;
         }
-        
+
+        .input-group {
+            margin: 18px 0;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #ddd;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #F97316;
+        }
+
+        /* Seção de Títulos */
         .titulos-section {
-            margin-top: 24px;
-            border-top: 1px solid #eee;
+            margin-top: 26px;
+            border-top: 2px solid #f0f0f0;
             padding-top: 20px;
         }
+
         .titulos-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 16px;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
         }
+
         .titulos-header h3 {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 16px;
+            font-size: 17px;
         }
+
         .btn-small {
             background: none;
             border: 1px solid #ddd;
-            padding: 6px 12px;
-            border-radius: 6px;
+            padding: 6px 14px;
+            border-radius: 30px;
             cursor: pointer;
             font-size: 12px;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             transition: all 0.2s;
         }
-        .btn-small:hover { background: #f5f5f5; border-color: #F97316; }
+
+        .btn-small:hover {
+            background: #f5f5f5;
+            border-color: #F97316;
+        }
+
         .titulos-list {
-            background: #f9f9f9;
-            border-radius: 12px;
+            background: #fafafa;
+            border-radius: 16px;
             padding: 12px;
-            max-height: 300px;
+            max-height: 320px;
             overflow-y: auto;
         }
+
         .titulo-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
+            padding: 12px;
             background: white;
-            margin-bottom: 6px;
-            border-radius: 8px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            border: 1px solid #eee;
         }
+
         .titulo-nivel {
-            width: 60px;
+            width: 70px;
             font-size: 11px;
             color: #F97316;
             font-weight: bold;
         }
+
         .titulo-texto {
             flex: 1;
             font-size: 13px;
             word-break: break-word;
+            color: #333;
         }
+
         .titulo-acoes {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
+
         .titulo-acoes button {
             background: none;
             border: none;
             cursor: pointer;
-            font-size: 16px;
-            padding: 4px;
-            border-radius: 4px;
+            font-size: 18px;
+            padding: 5px;
+            border-radius: 8px;
             transition: all 0.2s;
         }
-        .titulo-acoes button:hover { background: #f0f0f0; transform: scale(1.1); }
+
+        .titulo-acoes button:hover {
+            background: #f0f0f0;
+        }
+
         .add-titulo-form {
             display: flex;
             gap: 10px;
-            margin-top: 12px;
+            margin-top: 14px;
             flex-wrap: wrap;
         }
+
         .add-titulo-form input {
             flex: 2;
-            padding: 10px;
+            padding: 10px 14px;
             border: 1px solid #ddd;
-            border-radius: 8px;
+            border-radius: 30px;
             font-size: 13px;
         }
+
         .add-titulo-form select {
-            padding: 10px;
+            padding: 10px 14px;
             border: 1px solid #ddd;
-            border-radius: 8px;
+            border-radius: 30px;
             font-size: 13px;
         }
+
         .badge {
             background: #F97316;
             color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
+            padding: 3px 10px;
+            border-radius: 30px;
             font-size: 11px;
+            font-weight: bold;
         }
+
         .footer {
             text-align: center;
-            font-size: 12px;
-            color: #999;
+            font-size: 11px;
+            color: #aaa;
             margin-top: 20px;
         }
-        
+
+        /* MODAL */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.75);
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            z-index: 2000;
         }
+
         .modal {
             background: white;
-            border-radius: 20px;
-            max-width: 500px;
+            border-radius: 28px;
+            max-width: 520px;
             width: 90%;
-            max-height: 80vh;
+            max-height: 85vh;
             overflow-y: auto;
-            padding: 24px;
+            padding: 28px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
         }
-        .modal h3 { margin-bottom: 16px; font-size: 20px; }
-        .modal p { margin: 10px 0; line-height: 1.5; }
-        .modal button { margin-top: 20px; width: 100%; }
+
+        .modal h3 {
+            margin-bottom: 18px;
+            font-size: 22px;
+            color: #1a1a2e;
+        }
+
+        .modal p {
+            margin: 12px 0;
+            line-height: 1.5;
+            color: #444;
+            font-size: 14px;
+        }
+
+        .modal button {
+            margin-top: 24px;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
+
 <div class="container">
     <div class="card">
         <div class="header">
             <div class="header-icon">📄</div>
             <h1 class="title">Palmieri ABNT</h1>
-            <p class="subtitle">Formatação automática com validação de títulos</p>
-            <button class="btn-manual" id="btnManual">
+            <p class="subtitle">Formatação automática nas normas ABNT</p>
+            <button class="btn-manual" id="btnManualAbrir">
                 <span>📖</span> Manual de Uso
             </button>
         </div>
 
+        <!-- Upload -->
         <div class="drop-area" id="dropArea">
             <div class="upload-icon">📁</div>
-            <p>Arraste seu arquivo .docx aqui</p>
-            <p style="font-size: 12px; color: #999;">ou</p>
-            <button class="btn-outline" id="selectBtn">📂 Selecionar arquivo</button>
+            <p class="drop-text">Arraste seu arquivo .docx aqui</p>
+            <p style="font-size: 12px; color: #aaa;">ou</p>
+            <button class="btn-outline" id="btnSelecionar">📂 Selecionar arquivo</button>
             <input type="file" id="fileInput" accept=".docx" hidden>
         </div>
 
         <div id="fileInfo" class="file-info hidden">
             <span>📄</span>
-            <span id="fileName" style="flex:1"></span>
-            <button id="removeFile" class="btn-icon" style="background:none; border:none; cursor:pointer; font-size:18px;">✖️</button>
+            <span id="fileName" style="flex:1; font-weight:500;"></span>
+            <button id="btnRemover" style="background:none; border:none; cursor:pointer; font-size:20px;">✖️</button>
         </div>
 
         <div class="input-group hidden" id="nameGroup">
             <label>📝 Nome do arquivo PDF</label>
-            <input type="text" id="pdfName" placeholder="Meu documento formatado">
+            <input type="text" id="pdfName" placeholder="Ex: Meu TCC Formatado">
         </div>
 
+        <!-- Seção de Títulos -->
         <div id="titulosSection" class="titulos-section hidden">
             <div class="titulos-header">
-                <h3>
-                    <span>📑</span> 
-                    Títulos/Seções Detectados
-                    <span id="titulosCount" class="badge">0</span>
-                </h3>
-                <div>
-                    <button id="buscarNovosTitulos" class="btn-small">
-                        <span>🔍</span> Buscar títulos esquecidos
-                    </button>
-                </div>
+                <h3>📑 Títulos/Seções Detectados <span id="titulosCount" class="badge">0</span></h3>
+                <button id="btnBuscarTitulos" class="btn-small">🔍 Buscar títulos esquecidos</button>
             </div>
             <div id="titulosList" class="titulos-list"></div>
             <div class="add-titulo-form">
-                <input type="text" id="novoTituloTexto" placeholder="Título que não foi encontrado...">
-                <select id="novoTituloNivel">
+                <input type="text" id="novoTituloInput" placeholder="Título que não foi encontrado...">
+                <select id="nivelTituloSelect">
                     <option value="1">Nível 1 (Principal)</option>
                     <option value="2">Nível 2 (Subseção)</option>
                     <option value="3">Nível 3</option>
                 </select>
-                <button id="adicionarTituloBtn" class="btn-small">➕ Adicionar</button>
+                <button id="btnAddTitulo" class="btn-small">➕ Adicionar</button>
             </div>
-            <p style="font-size: 11px; color: #999; margin-top: 8px;">
-                💡 Dica: Títulos em negrito ou com numeração (1., 1.1, 2.) são detectados automaticamente.
-            </p>
+            <p style="font-size: 11px; color: #999; margin-top: 10px;">💡 Títulos em negrito ou com numeração (1., 1.1) são detectados automaticamente.</p>
         </div>
 
-        <button id="formatBtn" class="btn-primary hidden">✨ Gerar PDF Formatado</button>
+        <button id="btnFormatar" class="btn-primary hidden">✨ Formatar na ABNT</button>
 
-        <div id="progress" class="progress hidden">
+        <div id="progressArea" class="progress hidden">
             <span class="spinning">🔄</span>
             <span>Processando seu documento...</span>
         </div>
@@ -329,13 +475,11 @@
         <div id="errorMsg" class="error-msg hidden"></div>
         <div id="successMsg" class="success-msg hidden"></div>
     </div>
-    <div class="footer">
-        ⚡ Processamento local · Nenhum dado é enviado a servidores
-    </div>
+    <div class="footer">⚡ Processamento local no navegador · Nenhum dado é enviado a servidores</div>
 </div>
 
-<!-- MODAL MANUAL -->
-<div id="manualModal" class="modal-overlay hidden">
+<!-- MODAL MANUAL DE USO -->
+<div id="modalManual" class="modal-overlay hidden">
     <div class="modal">
         <h3>📖 Manual de Uso</h3>
         <p><strong>1.</strong> Envie um arquivo .docx arrastando ou clicando na área de upload</p>
@@ -344,8 +488,8 @@
         <p><strong>4.</strong> Se algum título não foi detectado, use "Buscar títulos esquecidos" ou adicione manualmente</p>
         <p><strong>5.</strong> Edite ou remova títulos indesejados usando os botões ✏️ e 🗑️</p>
         <p><strong>6.</strong> Clique em "Gerar PDF Formatado" para baixar o documento com formatação ABNT</p>
-        <p><strong>📌 Regras ABNT aplicadas:</strong> Fonte Times/Arial, margens 3cm/2cm, recuo 1,25cm, espaçamento 1,5</p>
-        <button id="btnFecharModal" class="btn-primary">Entendi</button>
+        <p><strong>📌 Regras ABNT aplicadas:</strong> Fonte Times/Arial, margens 3cm/2cm, recuo 1,25cm, espaçamento 1,5, sumário automático</p>
+        <button id="btnFecharModal" class="btn-primary">✅ Entendi</button>
     </div>
 </div>
 
@@ -353,149 +497,176 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
-    (function() {
-        // ==================== ELEMENTOS ====================
+    // Aguardar o DOM carregar completamente
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // ========== ELEMENTOS ==========
         const dropArea = document.getElementById('dropArea');
+        const btnSelecionar = document.getElementById('btnSelecionar');
         const fileInput = document.getElementById('fileInput');
-        const selectBtn = document.getElementById('selectBtn');
         const fileInfo = document.getElementById('fileInfo');
         const fileNameSpan = document.getElementById('fileName');
-        const removeFile = document.getElementById('removeFile');
+        const btnRemover = document.getElementById('btnRemover');
         const nameGroup = document.getElementById('nameGroup');
         const pdfNameInput = document.getElementById('pdfName');
-        const formatBtn = document.getElementById('formatBtn');
-        const progress = document.getElementById('progress');
+        const btnFormatar = document.getElementById('btnFormatar');
+        const progressArea = document.getElementById('progressArea');
         const errorMsg = document.getElementById('errorMsg');
         const successMsg = document.getElementById('successMsg');
         const titulosSection = document.getElementById('titulosSection');
         const titulosList = document.getElementById('titulosList');
         const titulosCount = document.getElementById('titulosCount');
-        const buscarNovosTitulos = document.getElementById('buscarNovosTitulos');
-        const adicionarTituloBtn = document.getElementById('adicionarTituloBtn');
-        const novoTituloTexto = document.getElementById('novoTituloTexto');
-        const novoTituloNivel = document.getElementById('novoTituloNivel');
-
+        const btnBuscarTitulos = document.getElementById('btnBuscarTitulos');
+        const btnAddTitulo = document.getElementById('btnAddTitulo');
+        const novoTituloInput = document.getElementById('novoTituloInput');
+        const nivelTituloSelect = document.getElementById('nivelTituloSelect');
+        
         // Modal
-        const btnManual = document.getElementById('btnManual');
-        const manualModal = document.getElementById('manualModal');
+        const btnManualAbrir = document.getElementById('btnManualAbrir');
+        const modalManual = document.getElementById('modalManual');
         const btnFecharModal = document.getElementById('btnFecharModal');
-
-        // ==================== VARIÁVEIS ====================
-        let selectedFile = null;
-        let rawHtmlContent = null;
-        let titulos = [];
-
-        // ==================== FUNÇÕES DO MODAL ====================
+        
+        // ========== VARIÁVEIS ==========
+        let arquivoSelecionado = null;
+        let htmlOriginal = null;
+        let listaTitulos = [];
+        
+        // ========== FUNÇÕES DO MODAL (TOTALMENTE FUNCIONAIS) ==========
         function abrirModal() {
-            if (manualModal) manualModal.classList.remove('hidden');
+            if (modalManual) {
+                modalManual.classList.remove('hidden');
+            }
         }
         
         function fecharModal() {
-            if (manualModal) manualModal.classList.add('hidden');
-        }
-        
-        if (btnManual) btnManual.addEventListener('click', abrirModal);
-        if (btnFecharModal) btnFecharModal.addEventListener('click', fecharModal);
-        
-        if (manualModal) {
-            manualModal.addEventListener('click', (e) => {
-                if (e.target === manualModal) fecharModal();
-            });
-        }
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && manualModal && !manualModal.classList.contains('hidden')) {
-                fecharModal();
+            if (modalManual) {
+                modalManual.classList.add('hidden');
             }
-        });
-
-        // ==================== EVENTOS DE UPLOAD ====================
-        if (selectBtn) selectBtn.addEventListener('click', () => fileInput.click());
+        }
         
-        if (dropArea) {
-            dropArea.addEventListener('click', (e) => {
-                if (e.target !== selectBtn && !selectBtn.contains(e.target)) {
-                    fileInput.click();
+        // Botão "Manual de Uso"
+        if (btnManualAbrir) {
+            btnManualAbrir.addEventListener('click', abrirModal);
+        }
+        
+        // Botão "Entendi" dentro do modal
+        if (btnFecharModal) {
+            btnFecharModal.addEventListener('click', fecharModal);
+        }
+        
+        // Fechar modal clicando fora (no overlay)
+        if (modalManual) {
+            modalManual.addEventListener('click', function(e) {
+                if (e.target === modalManual) {
+                    fecharModal();
                 }
             });
         }
         
-        if (removeFile) removeFile.addEventListener('click', resetState);
-        if (formatBtn) formatBtn.addEventListener('click', generatePdf);
-        if (buscarNovosTitulos) buscarNovosTitulos.addEventListener('click', buscarTitulosEsquecidos);
-        if (adicionarTituloBtn) adicionarTituloBtn.addEventListener('click', adicionarTituloManual);
-
-        if (fileInput) {
-            fileInput.addEventListener('change', (e) => {
-                if (e.target.files[0]) handleFile(e.target.files[0]);
+        // Fechar com tecla ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modalManual && !modalManual.classList.contains('hidden')) {
+                fecharModal();
+            }
+        });
+        
+        // ========== FUNÇÕES DE UPLOAD ==========
+        if (btnSelecionar) {
+            btnSelecionar.addEventListener('click', function() {
+                fileInput.click();
             });
         }
-
+        
         if (dropArea) {
-            dropArea.addEventListener('dragover', (e) => {
+            dropArea.addEventListener('click', function(e) {
+                if (e.target !== btnSelecionar && !btnSelecionar.contains(e.target)) {
+                    fileInput.click();
+                }
+            });
+            
+            dropArea.addEventListener('dragover', function(e) {
                 e.preventDefault();
                 dropArea.classList.add('drag-over');
             });
-            dropArea.addEventListener('dragleave', () => dropArea.classList.remove('drag-over'));
-            dropArea.addEventListener('drop', (e) => {
+            
+            dropArea.addEventListener('dragleave', function() {
+                dropArea.classList.remove('drag-over');
+            });
+            
+            dropArea.addEventListener('drop', function(e) {
                 e.preventDefault();
                 dropArea.classList.remove('drag-over');
-                if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+                const file = e.dataTransfer.files[0];
+                if (file) processarArquivo(file);
             });
         }
-
-        // ==================== PROCESSAMENTO ====================
-        async function handleFile(file) {
+        
+        if (fileInput) {
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files[0]) processarArquivo(e.target.files[0]);
+            });
+        }
+        
+        if (btnRemover) {
+            btnRemover.addEventListener('click', resetarEstado);
+        }
+        
+        if (btnBuscarTitulos) {
+            btnBuscarTitulos.addEventListener('click', buscarTitulosEsquecidos);
+        }
+        
+        if (btnAddTitulo) {
+            btnAddTitulo.addEventListener('click', adicionarTituloManual);
+        }
+        
+        if (btnFormatar) {
+            btnFormatar.addEventListener('click', gerarPDF);
+        }
+        
+        // ========== FUNÇÃO PRINCIPAL ==========
+        async function processarArquivo(file) {
             if (!file.name.toLowerCase().endsWith('.docx')) {
-                showError('❌ Por favor, selecione um arquivo .docx válido.');
+                mostrarErro('❌ Por favor, selecione um arquivo .docx válido.');
                 return;
             }
             if (file.size > 50 * 1024 * 1024) {
-                showError('❌ Arquivo muito grande. Máximo: 50MB');
+                mostrarErro('❌ Arquivo muito grande. Máximo: 50MB');
                 return;
             }
             
-            selectedFile = file;
+            arquivoSelecionado = file;
             fileNameSpan.textContent = file.name;
-            const baseName = file.name.replace(/\.docx$/i, '');
-            pdfNameInput.value = baseName + ' - Formatado ABNT';
+            const nomeBase = file.name.replace(/\.docx$/i, '');
+            pdfNameInput.value = nomeBase + ' - Formatado ABNT';
             
             fileInfo.classList.remove('hidden');
             nameGroup.classList.remove('hidden');
-            errorMsg.classList.add('hidden');
-            successMsg.classList.add('hidden');
+            esconderErroSucesso();
             
-            await processarDocumento(file);
-        }
-
-        async function processarDocumento(file) {
-            progress.classList.remove('hidden');
-            if (formatBtn) formatBtn.classList.add('hidden');
-            if (titulosSection) titulosSection.classList.add('hidden');
+            mostrarProgresso(true);
             
             try {
-                const arrayBuffer = await readFileAsArrayBuffer(file);
-                const result = await mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
-                rawHtmlContent = result.value;
+                const arrayBuffer = await lerArquivo(file);
+                const resultado = await mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
+                htmlOriginal = resultado.value;
                 
-                titulos = extrairTitulosDoHtml(rawHtmlContent);
+                listaTitulos = extrairTitulos(htmlOriginal);
                 
-                if (titulosSection) titulosSection.classList.remove('hidden');
+                titulosSection.classList.remove('hidden');
                 renderizarListaTitulos();
                 
-                showSuccess(`✅ Documento processado! ${titulos.length} títulos encontrados.`);
+                mostrarSucesso(`✅ Documento processado! ${listaTitulos.length} títulos encontrados.`);
                 
             } catch (err) {
                 console.error(err);
-                showError('❌ Erro ao processar o documento: ' + (err.message || 'Arquivo inválido'));
+                mostrarErro('❌ Erro ao processar o documento: ' + (err.message || 'Arquivo inválido'));
             } finally {
-                progress.classList.add('hidden');
-                if (formatBtn) formatBtn.classList.remove('hidden');
+                mostrarProgresso(false);
             }
         }
-
-        function extrairTitulosDoHtml(html) {
-            const titulosEncontrados = [];
+        
+        function extrairTitulos(html) {
+            const encontrados = [];
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
             
@@ -504,30 +675,26 @@
                 'ESCOPO', 'METODOLOGIA', 'DESENVOLVIMENTO', 'RESULTADOS',
                 'CONCLUSÃO', 'CONCLUSOES', 'CONCLUSAO', 'REFERÊNCIAS',
                 'REFERENCIAS', 'BIBLIOGRAFIA', 'ANEXO', 'APÊNDICE', 'APENDICE',
-                'JUSTIFICATIVA', 'FUNDAMENTAÇÃO', 'FUNDAMENTACAO',
-                'RESUMO', 'ABSTRACT', 'SUMÁRIO', 'SUMARIO'
+                'JUSTIFICATIVA', 'RESUMO', 'ABSTRACT', 'SUMÁRIO', 'SUMARIO',
+                'PLANO', 'PROJETO', 'FUNCIONALIDADES', 'REQUISITOS', 'TESTES'
             ];
             
-            const todosElementos = doc.body.querySelectorAll('*');
-            const textosProcessados = new Set();
+            const elementos = doc.body.querySelectorAll('*');
+            const textosVistos = new Set();
             
-            todosElementos.forEach((el) => {
+            elementos.forEach(el => {
                 const texto = el.textContent ? el.textContent.trim() : '';
-                if (!texto || texto.length < 3 || texto.length > 200) return;
-                if (textosProcessados.has(texto)) return;
+                if (!texto || texto.length < 3 || texto.length > 180) return;
+                if (textosVistos.has(texto)) return;
                 
-                const temNegrito = el.querySelector('strong, b') || 
-                                  el.tagName === 'STRONG' || 
-                                  el.tagName === 'B';
-                const comecaComNumero = /^\d+\./.test(texto);
-                const temPalavraChave = palavrasChave.some(pc => 
-                    texto.toUpperCase().includes(pc)
-                );
+                const temNegrito = el.querySelector('strong, b') || el.tagName === 'STRONG' || el.tagName === 'B';
+                const comecaNumero = /^\d+\./.test(texto);
+                const temPalavraChave = palavrasChave.some(pc => texto.toUpperCase().includes(pc));
                 const ehHeading = el.tagName.match(/^H[1-6]$/i);
                 
-                if ((temNegrito || comecaComNumero || temPalavraChave || ehHeading) && texto.length < 100) {
+                if ((temNegrito || comecaNumero || temPalavraChave || ehHeading) && texto.length < 100) {
                     let nivel = 2;
-                    if (comecaComNumero) {
+                    if (comecaNumero) {
                         const pontos = (texto.match(/\./g) || []).length;
                         nivel = Math.min(pontos + 1, 4);
                     } else if (ehHeading) {
@@ -536,96 +703,86 @@
                         nivel = 1;
                     }
                     
-                    titulosEncontrados.push({
-                        texto: texto,
-                        nivel: nivel,
-                        original: texto
-                    });
-                    textosProcessados.add(texto);
+                    encontrados.push({ texto: texto, nivel: nivel });
+                    textosVistos.add(texto);
                 }
             });
             
-            return titulosEncontrados;
+            return encontrados;
         }
-
+        
         function buscarTitulosEsquecidos() {
-            if (!rawHtmlContent) {
-                showError('❌ Nenhum documento processado.');
+            if (!htmlOriginal) {
+                mostrarErro('❌ Nenhum documento processado.');
                 return;
             }
             
-            progress.classList.remove('hidden');
+            mostrarProgresso(true);
             
             setTimeout(() => {
-                const novosTitulos = extrairTitulosDoHtml(rawHtmlContent);
-                const titulosExistentesTextos = new Set(titulos.map(t => t.texto));
-                const titulosNovos = novosTitulos.filter(t => !titulosExistentesTextos.has(t.texto));
+                const novos = extrairTitulos(htmlOriginal);
+                const textosExistentes = new Set(listaTitulos.map(t => t.texto));
+                const adicionados = novos.filter(t => !textosExistentes.has(t.texto));
                 
-                if (titulosNovos.length === 0) {
-                    showSuccess('🔍 Nenhum título novo foi encontrado!');
+                if (adicionados.length === 0) {
+                    mostrarSucesso('🔍 Nenhum título novo foi encontrado!');
                 } else {
-                    titulos.push(...titulosNovos);
+                    listaTitulos.push(...adicionados);
                     renderizarListaTitulos();
-                    showSuccess(`✅ ${titulosNovos.length} novo(s) título(s) adicionado(s)!`);
+                    mostrarSucesso(`✅ ${adicionados.length} novo(s) título(s) adicionado(s)!`);
                 }
-                progress.classList.add('hidden');
+                mostrarProgresso(false);
             }, 100);
         }
-
+        
         function adicionarTituloManual() {
-            const texto = novoTituloTexto.value.trim();
+            const texto = novoTituloInput.value.trim();
             if (!texto) {
-                showError('❌ Digite o título que deseja adicionar.');
+                mostrarErro('❌ Digite o título que deseja adicionar.');
                 return;
             }
             
-            const nivel = parseInt(novoTituloNivel.value);
+            const nivel = parseInt(nivelTituloSelect.value);
             
-            if (titulos.some(t => t.texto === texto)) {
-                showError('❌ Este título já está na lista.');
+            if (listaTitulos.some(t => t.texto === texto)) {
+                mostrarErro('❌ Este título já está na lista.');
                 return;
             }
             
-            titulos.push({
-                texto: texto,
-                nivel: nivel,
-                original: texto,
-                manual: true
-            });
-            
+            listaTitulos.push({ texto: texto, nivel: nivel, manual: true });
             renderizarListaTitulos();
-            novoTituloTexto.value = '';
-            showSuccess(`✅ Título "${texto}" adicionado!`);
+            novoTituloInput.value = '';
+            mostrarSucesso(`✅ Título "${texto}" adicionado!`);
         }
-
-        function removerTitulo(index) {
-            const removido = titulos[index].texto;
-            titulos.splice(index, 1);
+        
+        function removerTitulo(indice) {
+            const removido = listaTitulos[indice].texto;
+            listaTitulos.splice(indice, 1);
             renderizarListaTitulos();
-            showSuccess(`✅ Título "${removido}" removido.`);
+            mostrarSucesso(`✅ Título "${removido}" removido.`);
         }
-
-        function editarTitulo(index) {
-            const novoTitulo = prompt('Editar título:', titulos[index].texto);
-            if (novoTitulo && novoTitulo.trim()) {
-                titulos[index].texto = novoTitulo.trim();
+        
+        function editarTitulo(indice) {
+            const novoTxt = prompt('Editar título:', listaTitulos[indice].texto);
+            if (novoTxt && novoTxt.trim()) {
+                listaTitulos[indice].texto = novoTxt.trim();
                 renderizarListaTitulos();
-                showSuccess(`✅ Título atualizado.`);
+                mostrarSucesso(`✅ Título atualizado.`);
             }
         }
-
+        
         function renderizarListaTitulos() {
             if (!titulosList) return;
             
-            if (titulos.length === 0) {
-                titulosList.innerHTML = '<p style="text-align:center;color:#999;padding:20px;">Nenhum título detectado. Clique em "Buscar títulos esquecidos" ou adicione manualmente.</p>';
-                if (titulosCount) titulosCount.textContent = '0';
+            if (listaTitulos.length === 0) {
+                titulosList.innerHTML = '<p style="text-align:center;color:#999;padding:30px;">Nenhum título detectado. Clique em "Buscar títulos esquecidos" ou adicione manualmente.</p>';
+                titulosCount.textContent = '0';
                 return;
             }
             
-            if (titulosCount) titulosCount.textContent = titulos.length;
+            titulosCount.textContent = listaTitulos.length;
             
-            titulosList.innerHTML = titulos.map((t, idx) => `
+            titulosList.innerHTML = listaTitulos.map((t, idx) => `
                 <div class="titulo-item">
                     <div class="titulo-nivel">Nível ${t.nivel}</div>
                     <div class="titulo-texto">
@@ -639,169 +796,165 @@
                 </div>
             `).join('');
         }
-
+        
         window.editarTitulo = editarTitulo;
         window.removerTitulo = removerTitulo;
-
-        async function generatePdf() {
-            if (!selectedFile) {
-                showError('❌ Nenhum arquivo selecionado.');
+        
+        async function gerarPDF() {
+            if (!arquivoSelecionado) {
+                mostrarErro('❌ Nenhum arquivo selecionado.');
                 return;
             }
             
-            const pdfName = pdfNameInput.value.trim();
-            if (!pdfName) {
-                showError('❌ Digite um nome para o arquivo PDF.');
+            const nomePDF = pdfNameInput.value.trim();
+            if (!nomePDF) {
+                mostrarErro('❌ Digite um nome para o arquivo PDF.');
                 return;
             }
-
-            if (formatBtn) formatBtn.classList.add('hidden');
-            progress.classList.remove('hidden');
-            errorMsg.classList.add('hidden');
-            successMsg.classList.add('hidden');
-
+            
+            btnFormatar.classList.add('hidden');
+            mostrarProgresso(true);
+            esconderErroSucesso();
+            
             try {
-                const arrayBuffer = await readFileAsArrayBuffer(selectedFile);
-                const result = await mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
-                let htmlContent = result.value;
+                const arrayBuffer = await lerArquivo(arquivoSelecionado);
+                const resultado = await mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
+                let conteudoHtml = resultado.value;
                 
-                if (!htmlContent || htmlContent.trim() === '' || htmlContent.length < 50) {
-                    const textResult = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
-                    htmlContent = `<div style="white-space: pre-wrap;">${escapeHtml(textResult.value)}</div>`;
+                if (!conteudoHtml || conteudoHtml.length < 50) {
+                    const textoPuro = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
+                    conteudoHtml = `<div style="white-space: pre-wrap;">${escapeHtml(textoPuro.value)}</div>`;
                 }
                 
-                const sumarioHtml = construirSumario(titulos);
-                const fullHtml = buildAbntDocument(htmlContent, pdfName, sumarioHtml);
+                const sumarioHtml = gerarSumario(listaTitulos);
+                const documentoCompleto = montarDocumentoAbnt(conteudoHtml, nomePDF, sumarioHtml);
                 
                 const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = fullHtml;
-                tempDiv.style.cssText = `position: absolute; left: -9999px; top: 0; width: 210mm; background: white;`;
+                tempDiv.innerHTML = documentoCompleto;
+                tempDiv.style.cssText = 'position: absolute; left: -9999px; top: 0; width: 210mm; background: white;';
                 document.body.appendChild(tempDiv);
                 
-                const opt = {
+                const opcoes = {
                     margin: [25, 20, 20, 25],
-                    filename: pdfName + '.pdf',
+                    filename: nomePDF + '.pdf',
                     image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: { scale: 2, useCORS: true, logging: false },
                     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
                 
-                await html2pdf().set(opt).from(tempDiv).save();
+                await html2pdf().set(opcoes).from(tempDiv).save();
                 document.body.removeChild(tempDiv);
                 
-                showSuccess(`✅ PDF gerado com sucesso! ${titulos.length} títulos no sumário.`);
+                mostrarSucesso(`✅ PDF gerado com sucesso! ${listaTitulos.length} títulos no sumário.`);
                 
             } catch (err) {
                 console.error(err);
-                showError('❌ Erro ao gerar PDF: ' + (err.message || 'Tente novamente'));
+                mostrarErro('❌ Erro ao gerar PDF: ' + (err.message || 'Tente novamente'));
             } finally {
-                progress.classList.add('hidden');
-                if (formatBtn) formatBtn.classList.remove('hidden');
+                mostrarProgresso(false);
+                btnFormatar.classList.remove('hidden');
             }
         }
-
-        function construirSumario(titulosArray) {
+        
+        function gerarSumario(titulosArray) {
             if (!titulosArray || titulosArray.length === 0) {
                 return '<p style="text-align:center;">Nenhum título detectado para o sumário.</p>';
             }
             
-            let html = '<div class="sumario" style="margin: 20pt 0;"><h2 style="text-align:center; text-transform:uppercase;">SUMÁRIO</h2><ul style="list-style:none; padding-left:0;">';
-            titulosArray.forEach(titulo => {
-                const indent = (titulo.nivel - 1) * 20;
-                html += `<li style="margin-left: ${indent}px; margin-bottom: 4px;">${escapeHtml(titulo.texto)}</li>`;
+            let html = '<div style="margin: 30pt 0;"><h2 style="text-align:center; text-transform:uppercase; font-size:14pt;">SUMÁRIO</h2><ul style="list-style:none; padding-left:0;">';
+            titulosArray.forEach(t => {
+                const margem = (t.nivel - 1) * 20;
+                html += `<li style="margin-left: ${margem}px; margin-bottom: 5px;">${escapeHtml(t.texto)}</li>`;
             });
             html += '</ul></div><div style="page-break-before: always;"></div>';
             return html;
         }
-
-        function buildAbntDocument(content, title, sumarioHtml) {
-            return `
-<!DOCTYPE html>
+        
+        function montarDocumentoAbnt(conteudo, titulo, sumario) {
+            return `<!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>${escapeHtml(title)}</title>
-    <style>
-        @page { size: A4; margin: 3cm 2cm 2cm 3cm; }
-        body {
-            font-family: 'Times New Roman', Arial, sans-serif;
-            font-size: 12pt;
-            line-height: 1.5;
-            text-align: justify;
-            margin: 0;
-            padding: 0;
-        }
-        h1, h2, h3 { font-weight: bold; margin-top: 16pt; margin-bottom: 8pt; }
-        h1 { font-size: 14pt; text-align: center; text-transform: uppercase; }
-        h2 { font-size: 13pt; }
-        h3 { font-size: 12pt; margin-left: 1cm; }
-        p { margin: 0 0 6pt 0; text-indent: 1.25cm; }
-        .sumario { margin: 20pt 0; }
-        .sumario h2 { text-align: center; text-transform: uppercase; margin-bottom: 12pt; }
-        .sumario ul { list-style: none; padding-left: 0; }
-        .sumario li { margin-bottom: 4pt; }
-        .page-break { page-break-before: always; }
-        table { border-collapse: collapse; width: 100%; margin: 12pt 0; }
-        th, td { border: 1px solid #000; padding: 6pt; }
-        img { max-width: 100%; height: auto; display: block; margin: 12pt auto; }
-        blockquote { margin-left: 4cm; font-size: 10pt; line-height: 1.2; }
-    </style>
+<head><meta charset="UTF-8"><title>${escapeHtml(titulo)}</title>
+<style>
+    @page { size: A4; margin: 3cm 2cm 2cm 3cm; }
+    body { font-family: 'Times New Roman', Arial, sans-serif; font-size: 12pt; line-height: 1.5; text-align: justify; margin: 0; padding: 0; }
+    h1, h2, h3 { font-weight: bold; margin-top: 16pt; margin-bottom: 8pt; }
+    h1 { font-size: 14pt; text-align: center; text-transform: uppercase; }
+    h2 { font-size: 13pt; }
+    h3 { font-size: 12pt; margin-left: 1cm; }
+    p { margin: 0 0 6pt 0; text-indent: 1.25cm; }
+    table { border-collapse: collapse; width: 100%; margin: 12pt 0; }
+    th, td { border: 1px solid #000; padding: 6pt; }
+    img { max-width: 100%; height: auto; display: block; margin: 12pt auto; }
+    blockquote { margin-left: 4cm; font-size: 10pt; line-height: 1.2; }
+    ul, ol { margin: 6pt 0 6pt 2cm; }
+</style>
 </head>
 <body>
-    <div style="text-align:center; font-size:14pt; font-weight:bold; margin-bottom:20pt;">${escapeHtml(title)}</div>
-    ${sumarioHtml}
-    ${content}
+    <div style="text-align:center; font-size:14pt; font-weight:bold; margin-bottom:20pt;">${escapeHtml(titulo)}</div>
+    ${sumario}
+    ${conteudo}
 </body>
 </html>`;
         }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        function showError(msg) {
-            if (errorMsg) {
-                errorMsg.textContent = msg;
-                errorMsg.classList.remove('hidden');
-                if (successMsg) successMsg.classList.add('hidden');
-                setTimeout(() => errorMsg.classList.add('hidden'), 5000);
-            }
-        }
-
-        function showSuccess(msg) {
-            if (successMsg) {
-                successMsg.textContent = msg;
-                successMsg.classList.remove('hidden');
-                if (errorMsg) errorMsg.classList.add('hidden');
-                setTimeout(() => successMsg.classList.add('hidden'), 4000);
-            }
-        }
-
-        function readFileAsArrayBuffer(file) {
+        
+        function lerArquivo(file) {
             return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = () => reject(new Error('Falha ao ler o arquivo'));
-                reader.readAsArrayBuffer(file);
+                const leitor = new FileReader();
+                leitor.onload = () => resolve(leitor.result);
+                leitor.onerror = () => reject(new Error('Falha ao ler o arquivo'));
+                leitor.readAsArrayBuffer(file);
             });
         }
-
-        function resetState() {
-            selectedFile = null;
-            rawHtmlContent = null;
-            titulos = [];
-            if (fileInput) fileInput.value = '';
-            if (fileInfo) fileInfo.classList.add('hidden');
-            if (nameGroup) nameGroup.classList.add('hidden');
-            if (formatBtn) formatBtn.classList.add('hidden');
-            if (titulosSection) titulosSection.classList.add('hidden');
-            if (progress) progress.classList.add('hidden');
-            if (errorMsg) errorMsg.classList.add('hidden');
-            if (successMsg) successMsg.classList.add('hidden');
+        
+        function escapeHtml(texto) {
+            const div = document.createElement('div');
+            div.textContent = texto;
+            return div.innerHTML;
         }
-    })();
+        
+        function mostrarErro(msg) {
+            errorMsg.textContent = msg;
+            errorMsg.classList.remove('hidden');
+            successMsg.classList.add('hidden');
+            setTimeout(() => errorMsg.classList.add('hidden'), 5000);
+        }
+        
+        function mostrarSucesso(msg) {
+            successMsg.textContent = msg;
+            successMsg.classList.remove('hidden');
+            errorMsg.classList.add('hidden');
+            setTimeout(() => successMsg.classList.add('hidden'), 4000);
+        }
+        
+        function esconderErroSucesso() {
+            errorMsg.classList.add('hidden');
+            successMsg.classList.add('hidden');
+        }
+        
+        function mostrarProgresso(mostrar) {
+            if (mostrar) {
+                progressArea.classList.remove('hidden');
+                if (btnFormatar) btnFormatar.classList.add('hidden');
+            } else {
+                progressArea.classList.add('hidden');
+                if (btnFormatar && arquivoSelecionado) btnFormatar.classList.remove('hidden');
+            }
+        }
+        
+        function resetarEstado() {
+            arquivoSelecionado = null;
+            htmlOriginal = null;
+            listaTitulos = [];
+            fileInput.value = '';
+            fileInfo.classList.add('hidden');
+            nameGroup.classList.add('hidden');
+            titulosSection.classList.add('hidden');
+            btnFormatar.classList.add('hidden');
+            progressArea.classList.add('hidden');
+            errorMsg.classList.add('hidden');
+            successMsg.classList.add('hidden');
+        }
+    });
 </script>
 </body>
 </html>
