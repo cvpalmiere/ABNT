@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palmieri ABNT</title>
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- CSS próprio -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Container principal -->
+    <main class="container">
+
+        <!-- Card branco -->
+        <div class="card">
+
+            <!-- Cabeçalho -->
+            <header class="header">
+                <span class="material-icons header-icon">description</span>
+                <h1 class="title">Palmieri ABNT</h1>
+                <p class="subtitle">Formatação automática nas normas ABNT</p>
+
+                <!-- Botão Manual de Uso -->
+                <button class="btn-manual" id="btnManual">
+                    <span class="material-icons">menu_book</span>
+                    Manual de Uso
+                </button>
+            </header>
+
+            <!-- Área de upload -->
+            <section class="upload-section" id="uploadSection">
+                <div class="drop-area" id="dropArea">
+                    <span class="material-icons upload-icon">cloud_upload</span>
+                    <p class="drop-text">Arraste seu arquivo .docx aqui</p>
+                    <p class="drop-divider">ou</p>
+                    <button class="btn-outline" id="selectBtn">
+                        <span class="material-icons">folder_open</span>
+                        Selecionar arquivo
+                    </button>
+                    <input type="file" id="fileInput" accept=".docx" hidden>
+                </div>
+
+                <!-- Info do arquivo selecionado -->
+                <div class="file-info hidden" id="fileInfo">
+                    <span class="material-icons file-icon">description</span>
+                    <span class="file-name" id="fileName"></span>
+                    <button class="btn-icon" id="removeFile" title="Remover arquivo">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Nome do PDF -->
+            <section class="name-section hidden" id="nameSection">
+                <label class="input-label" for="pdfName">
+                    <span class="material-icons label-icon">drive_file_rename_outline</span>
+                    Nome do arquivo PDF
+                </label>
+                <div class="input-wrapper">
+                    <input
+                        type="text"
+                        id="pdfName"
+                        class="text-input"
+                        placeholder="Ex: Meu TCC Formatado"
+                        maxlength="100"
+                    >
+                    <span class="input-suffix">.pdf</span>
+                </div>
+            </section>
+
+            <!-- Botão de ação -->
+            <button class="btn-primary hidden" id="formatBtn">
+                <span class="material-icons">auto_fix_high</span>
+                Formatar na ABNT
+            </button>
+
+            <!-- Área de progresso -->
+            <div class="progress hidden" id="progress">
+                <span class="material-icons spin">sync</span>
+                <p>Formatando seu documento...</p>
+            </div>
+
+            <!-- Mensagens de erro -->
+            <div class="error-msg hidden" id="errorMsg"></div>
+
+        </div>
+
+        <!-- Rodapé -->
+        <footer class="footer">
+            <span class="material-icons footer-icon">info</span>
+            <p>Seu documento é processado localmente no navegador. Nenhum dado é enviado a servidores.</p>
+        </footer>
+
+    </main>
+
+    <!-- ==================== MODAL DO MANUAL DE USO ==================== -->
+    <div class="modal-overlay hidden" id="modalOverlay">
+        <div class="modal">
+            <!-- Cabeçalho do modal -->
+            <div class="modal-header">
+                <div class="modal-header-left">
+                    <span class="material-icons modal-header-icon">menu_book</span>
+                    <h2>Manual de Uso</h2>
+                </div>
+                <button class="btn-icon modal-close" id="btnCloseModal" title="Fechar">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+
+            <!-- Conteúdo do modal -->
+            <div class="modal-body">
+
+                <!-- Boas-vindas -->
+                <div class="manual-section">
+                    <h3>
+                        <span class="material-icons">waving_hand</span>
+                        Bem-vindo ao Palmieri ABNT
+                    </h3>
+                    <p>
+                        Esta ferramenta formata automaticamente seu trabalho acadêmico nas
+                        normas da ABNT. O processo é <strong>totalmente automático</strong> —
+                        você só precisa enviar seu arquivo .docx e baixar o PDF pronto.
+                    </p>
+                </div>
+
+                <!-- Como usar -->
+                <div class="manual-section">
+                    <h3>
+                        <span class="material-icons">play_circle</span>
+                        Como usar (3 passos)
+                    </h3>
+                    <ol class="manual-steps">
+                        <li>
+                            <strong>Envie seu arquivo .docx</strong><br>
+                            Arraste para a área indicada ou clique em "Selecionar arquivo".
+                            Apenas arquivos <strong>.docx</strong> são aceitos (Word 2007 ou superior).
+                        </li>
+                        <li>
+                            <strong>Defina o nome do PDF</strong><br>
+                            Escolha como quer que o arquivo final seja salvo.
+                            A extensão <em>.pdf</em> é adicionada automaticamente.
+                        </li>
+                        <li>
+                            <strong>Clique em "Formatar na ABNT"</strong><br>
+                            Aguarde alguns segundos. O processamento é feito
+                            <strong>no seu navegador</strong> — nenhum dado é enviado à internet.
+                        </li>
+                    </ol>
+                </div>
+
+                <!-- Boas práticas -->
+                <div class="manual-section highlight-box">
+                    <h3>
+                        <span class="material-icons">lightbulb</span>
+                        Boas práticas para garantir o melhor resultado
+                    </h3>
+                    <ul class="manual-checklist">
+                        <li>
+                            <span class="material-icons check-icon">check_circle</span>
+                            <span><strong>Use negrito nos títulos das seções.</strong><br>
+                            O sistema identifica títulos pelo negrito. Ex: <em>"1. INTRODUÇÃO"</em>,
+                            <em>"2. METODOLOGIA"</em>, <em>"REFERÊNCIAS"</em>.</span>
+                        </li>
+                        <li>
+                            <span class="material-icons check-icon">check_circle</span>
+                            <span><strong>Numere suas seções.</strong><br>
+                            Use numeração progressiva (1., 1.1, 1.1.1) para que o
+                            sumário seja gerado com a hierarquia correta.</span>
+                        </li>
+                        <li>
+                            <span class="material-icons check-icon">check_circle</span>
+                            <span><strong>Evite fontes muito exóticas no original.</strong><br>
+                            O PDF final usará sempre <strong>Arial</strong> (padrão ABNT).
+                            Mas se o original tiver fontes muito incomuns, pode haver
+                            pequenas variações na conversão.</span>
+                        </li>
+                        <li>
+                            <span class="material-icons check-icon">check_circle</span>
+                            <span><strong>Imagens com legendas.</strong><br>
+                            Coloque a legenda logo abaixo de cada imagem
+                            (ex: "Figura 1 - Gráfico de resultados").
+                            O sistema mantém imagens e legendas no PDF final.</span>
+                        </li>
+                        <li>
+                            <span class="material-icons check-icon">check_circle</span>
+                            <span><strong>Citações longas (mais de 3 linhas).</strong><br>
+                            Use o estilo "Citação" ou "Bloco de citação" do Word
+                            para que o sistema reconheça e aplique o recuo de 4cm.</span>
+                        </li>
+                        <li>
+                            <span class="material-icons check-icon">check_circle</span>
+                            <span><strong>Tamanho máximo: 50MB.</strong><br>
+                            Arquivos muito grandes (muitas imagens pesadas) podem
+                            deixar o processamento lento. Comprima imagens antes se necessário.</span>
+                        </li>
+                        <li>
+                            <span class="material-icons check-icon">check_circle</span>
+                            <span><strong>Revise o PDF final.</strong><br>
+                            O sistema faz o melhor esforço, mas sempre confira
+                            sumário, numeração e posição de imagens após a formatação.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Regras ABNT aplicadas -->
+                <div class="manual-section">
+                    <h3>
+                        <span class="material-icons">rule</span>
+                        Regras ABNT aplicadas automaticamente
+                    </h3>
+                    <table class="manual-table">
+                        <thead>
+                            <tr>
+                                <th>Elemento</th>
+                                <th>Formatação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Fonte</td>
+                                <td>Arial 12pt (texto), 10pt (citações/legendas)</td>
+                            </tr>
+                            <tr>
+                                <td>Margens</td>
+                                <td>Superior 3cm, Esquerda 3cm, Inferior 2cm, Direita 2cm</td>
+                            </tr>
+                            <tr>
+                                <td>Espaçamento</td>
+                                <td>1,5 (texto), 1,0 (citações longas)</td>
+                            </tr>
+                            <tr>
+                                <td>Parágrafo</td>
+                                <td>Recuo de 1,25cm na primeira linha</td>
+                            </tr>
+                            <tr>
+                                <td>Títulos</td>
+                                <td>Negrito, centralizados (nível 1) ou alinhados à esquerda</td>
+                            </tr>
+                            <tr>
+                                <td>Sumário</td>
+                                <td>Gerado automaticamente</td>
+                            </tr>
+                            <tr>
+                                <td>Imagens</td>
+                                <td>Centralizadas com legenda original preservada</td>
+                            </tr>
+                            <tr>
+                                <td>Citações longas</td>
+                                <td>Recuo 4cm, fonte 10pt, espaçamento simples</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Privacidade -->
+                <div class="manual-section privacy-box">
+                    <h3>
+                        <span class="material-icons">security</span>
+                        Privacidade e segurança
+                    </h3>
+                    <p>
+                        <strong>Seu documento nunca sai do seu computador.</strong>
+                        Todo o processamento é feito localmente no seu navegador
+                        (JavaScript). Nenhum dado é enviado para servidores externos.
+                        Você pode usar a ferramenta offline após o primeiro carregamento.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Rodapé do modal -->
+            <div class="modal-footer">
+                <button class="btn-primary" id="btnCloseModalFooter">
+                    <span class="material-icons">check</span>
+                    Entendi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bibliotecas externas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- Script próprio -->
+    <script src="script.js"></script>
+</body>
+</html>
