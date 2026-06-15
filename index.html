@@ -3,370 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Palmieri ABNT - Versão Estável</title>
+    <title>Palmieri ABNT - Com Prévia</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
             background: #FFF8E1;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-family: 'Segoe UI', Arial, sans-serif;
             padding: 20px;
         }
-        .container { max-width: 850px; width: 100%; }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
         .card {
             background: white;
-            border-radius: 28px;
-            padding: 32px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
         }
-        .header { text-align: center; margin-bottom: 28px; }
-        .header-icon { font-size: 52px; color: #F97316; }
-        .title { font-size: 28px; font-weight: 700; color: #1a1a2e; margin-top: 8px; }
-        .subtitle { color: #666; margin-top: 6px; font-size: 14px; }
-        .btn-manual {
-            background: none;
-            border: 1.5px solid #e0e0e0;
-            padding: 8px 20px;
-            border-radius: 40px;
-            cursor: pointer;
-            margin-top: 14px;
-            font-size: 13px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
+        h1 {
+            font-size: 28px;
+            color: #1a1a2e;
+            text-align: center;
+            margin-bottom: 8px;
         }
-        .btn-manual:hover { background: #FFF8E1; border-color: #F97316; color: #F97316; }
+        .sub {
+            text-align: center;
+            color: #666;
+            margin-bottom: 24px;
+        }
         .drop-area {
             border: 2px dashed #ccc;
             border-radius: 20px;
-            padding: 45px 20px;
+            padding: 40px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: 0.2s;
             background: #fefefe;
         }
-        .drop-area:hover, .drop-area.drag-over { border-color: #F97316; background: #FFF8E1; }
-        .upload-icon { font-size: 52px; color: #999; margin-bottom: 8px; }
-        .btn-outline {
-            background: none;
-            border: 1.5px solid #ddd;
-            padding: 10px 24px;
+        .drop-area:hover, .drag-over {
+            border-color: #F97316;
+            background: #FFF8E1;
+        }
+        .btn {
+            background: #F97316;
+            color: white;
+            border: none;
+            padding: 12px 28px;
             border-radius: 40px;
+            font-weight: bold;
             cursor: pointer;
-            margin-top: 12px;
+            margin-top: 16px;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-size: 14px;
-            transition: all 0.2s;
         }
-        .btn-outline:hover { background: #FFF8E1; border-color: #F97316; }
-        .btn-primary {
-            width: 100%;
-            background: #F97316;
-            border: none;
-            padding: 14px;
-            border-radius: 40px;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-            transition: all 0.2s;
-            color: white;
+        .btn-secondary {
+            background: #27272A;
         }
-        .btn-primary:hover { background: #EA580C; transform: scale(1.01); }
-        .file-info {
-            background: #E8F5E9;
-            padding: 14px;
+        .hidden { display: none; }
+        .preview-area {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
             border-radius: 16px;
-            margin-top: 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            padding: 16px;
+            max-height: 300px;
+            overflow: auto;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            margin: 16px 0;
         }
-        .hidden { display: none !important; }
-        .progress {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 14px;
-            padding: 20px;
-            color: #F97316;
-            background: #FFF8E1;
-            border-radius: 40px;
-            margin-top: 16px;
+        .status {
+            padding: 12px;
+            border-radius: 12px;
+            margin: 12px 0;
         }
-        .spinning { animation: spin 1s linear infinite; font-size: 22px; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .error-msg {
-            background: #FFEBEE;
-            color: #EF5350;
-            padding: 14px;
-            border-radius: 16px;
-            margin-top: 16px;
-            text-align: center;
-            font-size: 14px;
-            font-weight: 500;
+        .status.success { background: #E8F5E9; color: #2E7D32; }
+        .status.error { background: #FFEBEE; color: #EF5350; }
+        .status.info { background: #E3F2FD; color: #1565C0; }
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #F97316;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
         }
-        .success-msg {
-            background: #E8F5E9;
-            color: #2E7D32;
-            padding: 14px;
-            border-radius: 16px;
-            margin-top: 16px;
-            text-align: center;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .input-group { margin: 18px 0; }
-        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
-        .input-group input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1.5px solid #ddd;
-            border-radius: 40px;
-            font-size: 14px;
-            transition: all 0.2s;
-        }
-        .input-group input:focus { outline: none; border-color: #F97316; }
-        
-        .titulos-section {
-            margin-top: 26px;
-            border-top: 2px solid #f0f0f0;
-            padding-top: 20px;
-        }
-        .titulos-header {
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .flex-between {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
             flex-wrap: wrap;
             gap: 12px;
-        }
-        .titulos-header h3 { display: flex; align-items: center; gap: 8px; font-size: 17px; }
-        .btn-small {
-            background: none;
-            border: 1px solid #ddd;
-            padding: 6px 14px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-size: 12px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
-        }
-        .btn-small:hover { background: #f5f5f5; border-color: #F97316; }
-        .titulos-list {
-            background: #fafafa;
-            border-radius: 16px;
-            padding: 12px;
-            max-height: 320px;
-            overflow-y: auto;
-        }
-        .titulo-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            background: white;
-            margin-bottom: 8px;
-            border-radius: 12px;
-            border: 1px solid #eee;
-        }
-        .titulo-nivel { width: 70px; font-size: 11px; color: #F97316; font-weight: bold; }
-        .titulo-texto { flex: 1; font-size: 13px; word-break: break-word; color: #333; }
-        .titulo-acoes { display: flex; gap: 10px; }
-        .titulo-acoes button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            padding: 5px;
-            border-radius: 8px;
-            transition: all 0.2s;
-        }
-        .titulo-acoes button:hover { background: #f0f0f0; }
-        .add-titulo-form {
-            display: flex;
-            gap: 10px;
-            margin-top: 14px;
-            flex-wrap: wrap;
-        }
-        .add-titulo-form input { flex: 2; padding: 10px 14px; border: 1px solid #ddd; border-radius: 40px; font-size: 13px; }
-        .add-titulo-form select { padding: 10px 14px; border: 1px solid #ddd; border-radius: 40px; font-size: 13px; }
-        .badge { background: #F97316; color: white; padding: 3px 10px; border-radius: 40px; font-size: 11px; font-weight: bold; }
-        .footer { text-align: center; font-size: 11px; color: #aaa; margin-top: 20px; }
-        
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.75);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-        }
-        .modal {
-            background: white;
-            border-radius: 28px;
-            max-width: 520px;
-            width: 90%;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding: 28px;
-        }
-        .modal h3 { margin-bottom: 18px; font-size: 22px; }
-        .modal p { margin: 12px 0; line-height: 1.5; color: #444; font-size: 14px; }
-        .modal button { margin-top: 24px; width: 100%; }
-        
-        /* Preview para debug */
-        .preview-area {
-            margin-top: 20px;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            padding: 12px;
-            background: #f9f9f9;
-            max-height: 200px;
-            overflow: auto;
-            font-size: 11px;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="card">
-        <div class="header">
-            <div class="header-icon">📄</div>
-            <h1 class="title">Palmieri ABNT</h1>
-            <p class="subtitle">Formatação automática nas normas ABNT</p>
-            <button class="btn-manual" id="btnManualAbrir">📖 Manual de Uso</button>
-        </div>
+        <h1>📄 Palmieri ABNT</h1>
+        <div class="sub">Formatação automática com pré-visualização</div>
 
         <div class="drop-area" id="dropArea">
-            <div class="upload-icon">📁</div>
-            <p>Arraste seu arquivo .docx aqui</p>
-            <p style="font-size: 12px; color: #aaa;">ou</p>
-            <button class="btn-outline" id="btnSelecionar">📂 Selecionar arquivo</button>
+            📂 Arraste seu arquivo .docx aqui ou clique para selecionar
             <input type="file" id="fileInput" accept=".docx" hidden>
         </div>
 
-        <div id="fileInfo" class="file-info hidden">
-            <span>📄</span>
-            <span id="fileName" style="flex:1; font-weight:500;"></span>
-            <button id="btnRemover" style="background:none; border:none; cursor:pointer; font-size:20px;">✖️</button>
+        <div id="fileInfo" class="hidden" style="margin-top: 16px; background:#E8F5E9; padding:12px; border-radius:16px;">
+            <strong>📄 Arquivo:</strong> <span id="fileName"></span>
+            <button id="clearBtn" style="float:right; background:none; border:none; cursor:pointer;">✖️</button>
         </div>
 
-        <div class="input-group hidden" id="nameGroup">
-            <label>📝 Nome do arquivo PDF</label>
-            <input type="text" id="pdfName" placeholder="Ex: Meu TCC Formatado" value="Documento Formatado ABNT">
+        <div class="flex-between" style="margin-top: 16px;">
+            <label><strong>📝 Nome do PDF:</strong></label>
+            <input type="text" id="pdfName" style="flex:1; margin-left:12px; padding:8px; border-radius:20px; border:1px solid #ccc;" placeholder="Nome do arquivo">
         </div>
 
-        <div id="titulosSection" class="titulos-section hidden">
-            <div class="titulos-header">
-                <h3>📑 Títulos/Seções Detectados <span id="titulosCount" class="badge">0</span></h3>
-                <button id="btnBuscarTitulos" class="btn-small">🔍 Buscar títulos esquecidos</button>
+        <!-- Área de prévia do texto extraído -->
+        <div id="previewBox" class="hidden">
+            <div class="flex-between">
+                <strong>🔍 PRÉVIA DO TEXTO EXTRAÍDO (verifique se aparece o conteúdo)</strong>
+                <span id="charCount" style="font-size:12px; color:#666;"></span>
             </div>
-            <div id="titulosList" class="titulos-list"></div>
-            <div class="add-titulo-form">
-                <input type="text" id="novoTituloInput" placeholder="Título que não foi encontrado...">
-                <select id="nivelTituloSelect">
-                    <option value="1">Nível 1 (Principal)</option>
-                    <option value="2">Nível 2 (Subseção)</option>
-                    <option value="3">Nível 3</option>
-                </select>
-                <button id="btnAddTitulo" class="btn-small">➕ Adicionar</button>
-            </div>
-            <p style="font-size: 11px; color: #999; margin-top: 10px;">💡 Títulos em negrito ou com numeração (1., 1.1) são detectados automaticamente.</p>
+            <div id="previewContent" class="preview-area"></div>
         </div>
 
-        <button id="btnFormatar" class="btn-primary hidden">✨ Gerar PDF Formatado</button>
-
-        <div id="progressArea" class="progress hidden">
-            <span class="spinning">🔄</span>
-            <span id="progressText">Processando seu documento...</span>
+        <!-- Lista de títulos detectados (opcional, mas útil) -->
+        <div id="titulosBox" class="hidden" style="margin-top: 16px;">
+            <strong>📑 Títulos detectados:</strong>
+            <div id="titulosList" style="background:#fafafa; border-radius:12px; padding:12px; margin-top:8px; max-height:150px; overflow:auto;"></div>
+            <button id="buscarTitulosBtn" class="btn btn-secondary" style="margin-top:8px; padding:6px 12px; font-size:12px;">🔍 Buscar mais títulos</button>
         </div>
 
-        <div id="errorMsg" class="error-msg hidden"></div>
-        <div id="successMsg" class="success-msg hidden"></div>
-    </div>
-    <div class="footer">⚡ Processamento local no navegador · Nenhum dado é enviado a servidores</div>
-</div>
+        <div style="display: flex; gap: 12px; margin-top: 20px;">
+            <button id="gerarPdfBtn" class="btn" disabled>✨ Gerar PDF</button>
+            <button id="limparBtn" class="btn btn-secondary">🗑️ Limpar</button>
+        </div>
 
-<div id="modalManual" class="modal-overlay hidden">
-    <div class="modal">
-        <h3>📖 Manual de Uso</h3>
-        <p><strong>1.</strong> Envie um arquivo .docx arrastando ou clicando na área de upload</p>
-        <p><strong>2.</strong> O sistema detecta automaticamente os títulos (negrito, numeração, palavras-chave)</p>
-        <p><strong>3.</strong> Revise a lista de títulos encontrados</p>
-        <p><strong>4.</strong> Se algum título não foi detectado, use "Buscar títulos esquecidos" ou adicione manualmente</p>
-        <p><strong>5.</strong> Edite ou remova títulos indesejados usando os botões ✏️ e 🗑️</p>
-        <p><strong>6.</strong> Clique em "Gerar PDF Formatado" para baixar o documento</p>
-        <button id="btnFecharModal" class="btn-primary">✅ Entendi</button>
+        <div id="statusMsg" class="status hidden"></div>
+        <div id="loadingMsg" class="hidden" style="margin-top:16px; text-align:center;"><span class="loader"></span> Processando...</div>
     </div>
+    <div style="text-align:center; font-size:12px; color:#999;">⚡ Processamento local – nenhum dado sai do seu computador</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-(function() {
-    // ==================== ELEMENTOS ====================
-    const dropArea = document.getElementById('dropArea');
-    const btnSelecionar = document.getElementById('btnSelecionar');
-    const fileInput = document.getElementById('fileInput');
-    const fileInfo = document.getElementById('fileInfo');
-    const fileNameSpan = document.getElementById('fileName');
-    const btnRemover = document.getElementById('btnRemover');
-    const nameGroup = document.getElementById('nameGroup');
-    const pdfNameInput = document.getElementById('pdfName');
-    const btnFormatar = document.getElementById('btnFormatar');
-    const progressArea = document.getElementById('progressArea');
-    const progressText = document.getElementById('progressText');
-    const errorMsg = document.getElementById('errorMsg');
-    const successMsg = document.getElementById('successMsg');
-    const titulosSection = document.getElementById('titulosSection');
-    const titulosList = document.getElementById('titulosList');
-    const titulosCount = document.getElementById('titulosCount');
-    const btnBuscarTitulos = document.getElementById('btnBuscarTitulos');
-    const btnAddTitulo = document.getElementById('btnAddTitulo');
-    const novoTituloInput = document.getElementById('novoTituloInput');
-    const nivelTituloSelect = document.getElementById('nivelTituloSelect');
-    
-    // Modal
-    const btnManualAbrir = document.getElementById('btnManualAbrir');
-    const modalManual = document.getElementById('modalManual');
-    const btnFecharModal = document.getElementById('btnFecharModal');
-    
-    // ==================== VARIÁVEIS ====================
-    let arquivoSelecionado = null;
-    let htmlOriginal = null;
-    let textoPuro = null;
-    let listaTitulos = [];
-    
-    // ==================== MODAL ====================
-    function abrirModal() { if(modalManual) modalManual.classList.remove('hidden'); }
-    function fecharModal() { if(modalManual) modalManual.classList.add('hidden'); }
-    if(btnManualAbrir) btnManualAbrir.addEventListener('click', abrirModal);
-    if(btnFecharModal) btnFecharModal.addEventListener('click', fecharModal);
-    if(modalManual) modalManual.addEventListener('click', (e) => { if(e.target === modalManual) fecharModal(); });
-    document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && modalManual && !modalManual.classList.contains('hidden')) fecharModal(); });
-    
-    // ==================== UPLOAD ====================
-    if(btnSelecionar) btnSelecionar.addEventListener('click', () => fileInput.click());
-    if(dropArea) {
-        dropArea.addEventListener('click', (e) => { if(e.target !== btnSelecionar && !btnSelecionar.contains(e.target)) fileInput.click(); });
+    (function(){
+        // Elementos
+        const dropArea = document.getElementById('dropArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileNameSpan = document.getElementById('fileName');
+        const clearBtn = document.getElementById('clearBtn');
+        const pdfNameInput = document.getElementById('pdfName');
+        const previewBox = document.getElementById('previewBox');
+        const previewContent = document.getElementById('previewContent');
+        const charCount = document.getElementById('charCount');
+        const titulosBox = document.getElementById('titulosBox');
+        const titulosList = document.getElementById('titulosList');
+        const gerarBtn = document.getElementById('gerarPdfBtn');
+        const limparBtn = document.getElementById('limparBtn');
+        const statusDiv = document.getElementById('statusMsg');
+        const loadingDiv = document.getElementById('loadingMsg');
+        const buscarTitulosBtn = document.getElementById('buscarTitulosBtn');
+
+        let arquivoAtual = null;
+        let textoExtraido = '';
+        let titulos = [];
+
+        // Abrir seletor de arquivo
+        dropArea.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => {
+            if(e.target.files[0]) processarArquivo(e.target.files[0]);
+        });
         dropArea.addEventListener('dragover', (e) => { e.preventDefault(); dropArea.classList.add('drag-over'); });
         dropArea.addEventListener('dragleave', () => dropArea.classList.remove('drag-over'));
         dropArea.addEventListener('drop', (e) => {
@@ -374,503 +188,223 @@
             dropArea.classList.remove('drag-over');
             if(e.dataTransfer.files[0]) processarArquivo(e.dataTransfer.files[0]);
         });
-    }
-    if(fileInput) fileInput.addEventListener('change', (e) => { if(e.target.files[0]) processarArquivo(e.target.files[0]); });
-    if(btnRemover) btnRemover.addEventListener('click', resetarEstado);
-    if(btnFormatar) btnFormatar.addEventListener('click', gerarPDF);
-    if(btnBuscarTitulos) btnBuscarTitulos.addEventListener('click', buscarTitulosEsquecidos);
-    if(btnAddTitulo) btnAddTitulo.addEventListener('click', adicionarTituloManual);
-    
-    // ==================== PROCESSAR ARQUIVO ====================
-    async function processarArquivo(file) {
-        if(!file.name.toLowerCase().endsWith('.docx')) {
-            mostrarErro('❌ Por favor, selecione um arquivo .docx válido.');
-            return;
+
+        clearBtn.addEventListener('click', limparTudo);
+        limparBtn.addEventListener('click', limparTudo);
+        gerarBtn.addEventListener('click', gerarPDF);
+        buscarTitulosBtn.addEventListener('click', extrairTitulosDoTexto);
+
+        function mostrarStatus(texto, tipo) {
+            statusDiv.textContent = texto;
+            statusDiv.className = `status ${tipo}`;
+            statusDiv.classList.remove('hidden');
+            setTimeout(() => statusDiv.classList.add('hidden'), 5000);
         }
-        if(file.size > 50 * 1024 * 1024) {
-            mostrarErro('❌ Arquivo muito grande. Máximo: 50MB');
-            return;
+
+        function limparTudo() {
+            arquivoAtual = null;
+            textoExtraido = '';
+            titulos = [];
+            previewBox.classList.add('hidden');
+            titulosBox.classList.add('hidden');
+            gerarBtn.disabled = true;
+            fileInput.value = '';
+            document.getElementById('fileInfo').classList.add('hidden');
+            pdfNameInput.value = '';
+            mostrarStatus('Pronto para novo arquivo.', 'info');
         }
-        
-        arquivoSelecionado = file;
-        fileNameSpan.textContent = file.name;
-        const nomeBase = file.name.replace(/\.docx$/i, '');
-        pdfNameInput.value = nomeBase + ' - Formatado ABNT';
-        
-        fileInfo.classList.remove('hidden');
-        nameGroup.classList.remove('hidden');
-        esconderErroSucesso();
-        mostrarProgresso(true, 'Lendo arquivo...');
-        
-        try {
-            const arrayBuffer = await lerArquivo(file);
-            
-            mostrarProgresso(true, 'Extraindo conteúdo do documento...');
-            
-            // TENTATIVA 1: Converter para HTML
-            let resultado = null;
-            let erroMammoth = null;
-            
+
+        async function processarArquivo(file) {
+            if(!file.name.endsWith('.docx')) {
+                mostrarStatus('❌ O arquivo deve ser .docx', 'error');
+                return;
+            }
+            if(file.size > 50*1024*1024) {
+                mostrarStatus('❌ Arquivo muito grande (>50MB)', 'error');
+                return;
+            }
+
+            loadingDiv.classList.remove('hidden');
+            arquivoAtual = file;
+            document.getElementById('fileInfo').classList.remove('hidden');
+            fileNameSpan.textContent = file.name;
+            pdfNameInput.value = file.name.replace(/\.docx$/i, '') + ' - Formatado ABNT';
+
             try {
-                resultado = await mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
-                htmlOriginal = resultado.value;
-                console.log('HTML extraído, tamanho:', htmlOriginal ? htmlOriginal.length : 0);
-            } catch(e) {
-                erroMammoth = e;
-                console.warn('Erro no mammoth HTML:', e);
-            }
-            
-            // TENTATIVA 2: Se falhou ou está vazio, extrair texto puro
-            if(!htmlOriginal || htmlOriginal.length < 50) {
-                mostrarProgresso(true, 'Extraindo texto puro como alternativa...');
-                try {
-                    const textoResult = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
-                    textoPuro = textoResult.value;
-                    console.log('Texto puro extraído, tamanho:', textoPuro ? textoPuro.length : 0);
-                } catch(e) {
-                    console.warn('Erro no texto puro:', e);
-                }
-            }
-            
-            // TENTATIVA 3: Se ainda não tem conteúdo, erro
-            if((!htmlOriginal || htmlOriginal.length < 50) && (!textoPuro || textoPuro.length < 50)) {
-                throw new Error('Não foi possível extrair o conteúdo do documento. Verifique se o arquivo não está corrompido.');
-            }
-            
-            // Extrair títulos
-            listaTitulos = extrairTitulos();
-            
-            titulosSection.classList.remove('hidden');
-            renderizarListaTitulos();
-            
-            mostrarSucesso(`✅ Documento processado! ${listaTitulos.length} títulos encontrados.`);
-            
-        } catch(err) {
-            console.error('Erro completo:', err);
-            mostrarErro('❌ Erro ao processar: ' + (err.message || 'Arquivo inválido ou corrompido'));
-        } finally {
-            mostrarProgresso(false);
-        }
-    }
-    
-    function extrairTitulos() {
-        const encontrados = [];
-        let textoParaAnalise = '';
-        
-        // Usar HTML se disponível, senão usar texto puro
-        if(htmlOriginal && htmlOriginal.length > 50) {
-            textoParaAnalise = htmlOriginal;
-        } else if(textoPuro) {
-            textoParaAnalise = textoPuro;
-        } else {
-            return [];
-        }
-        
-        const palavrasChave = [
-            'INTRODUÇÃO', 'INTRODUCAO', 'OBJETIVO', 'OBJETIVOS',
-            'ESCOPO', 'METODOLOGIA', 'DESENVOLVIMENTO', 'RESULTADOS',
-            'CONCLUSÃO', 'CONCLUSOES', 'CONCLUSAO', 'REFERÊNCIAS',
-            'REFERENCIAS', 'BIBLIOGRAFIA', 'ANEXO', 'APÊNDICE', 'APENDICE',
-            'JUSTIFICATIVA', 'RESUMO', 'ABSTRACT', 'SUMÁRIO', 'SUMARIO',
-            'PLANO', 'PROJETO', 'FUNCIONALIDADES', 'REQUISITOS', 'TESTES',
-            'DASHBOARD', 'ADMIN', 'DIRETOR', 'ONBOARDING', 'ALGORITMO'
-        ];
-        
-        // Separar por linhas
-        const linhas = textoParaAnalise.split(/\r?\n/);
-        const textosVistos = new Set();
-        
-        for(let linha of linhas) {
-            linha = linha.trim();
-            if(!linha || linha.length < 3 || linha.length > 180) continue;
-            if(textosVistos.has(linha)) continue;
-            
-            // Limpar tags HTML se houver
-            const limpa = linha.replace(/<[^>]*>/g, '');
-            if(limpa.length < 3) continue;
-            
-            const temNegrito = linha.includes('<strong>') || linha.includes('<b>');
-            const comecaNumero = /^\d+\./.test(limpa);
-            const temPalavraChave = palavrasChave.some(pc => limpa.toUpperCase().includes(pc));
-            const ehCurto = limpa.length < 100;
-            
-            if((temNegrito || comecaNumero || temPalavraChave) && ehCurto) {
-                let nivel = 2;
-                if(comecaNumero) {
-                    const pontos = (limpa.match(/\./g) || []).length;
-                    nivel = Math.min(pontos + 1, 4);
-                } else if(limpa.length < 60 && temNegrito) {
-                    nivel = 1;
-                }
+                const arrayBuffer = await file.arrayBuffer();
+                // Extrair texto puro (mais confiável)
+                const result = await mammoth.extractRawText({ arrayBuffer });
+                textoExtraido = result.value;
                 
-                encontrados.push({ texto: limpa, nivel: nivel });
-                textosVistos.add(limpa);
+                if(!textoExtraido || textoExtraido.trim().length < 20) {
+                    throw new Error('Texto extraído está vazio ou muito curto.');
+                }
+
+                // Mostrar prévia
+                previewContent.innerText = textoExtraido.substring(0, 2000) + (textoExtraido.length > 2000 ? '... (cortado para prévia)' : '');
+                charCount.innerText = `${textoExtraido.length} caracteres`;
+                previewBox.classList.remove('hidden');
+
+                // Extrair títulos
+                extrairTitulosDoTexto();
+                
+                gerarBtn.disabled = false;
+                mostrarStatus(`✅ Documento carregado! ${textoExtraido.length} caracteres extraídos.`, 'success');
+            } catch(err) {
+                console.error(err);
+                mostrarStatus('❌ Erro ao ler o arquivo: ' + err.message, 'error');
+                gerarBtn.disabled = true;
+            } finally {
+                loadingDiv.classList.add('hidden');
             }
         }
-        
-        // Se não encontrou nada com negrito, tenta por palavras-chave apenas
-        if(encontrados.length === 0) {
+
+        function extrairTitulosDoTexto() {
+            if(!textoExtraido) return;
+            const linhas = textoExtraido.split(/\r?\n/);
+            const palavrasChave = ['INTRODUÇÃO','OBJETIVO','METODOLOGIA','CONCLUSÃO','REFERÊNCIAS','BLOCO','QUESTÃO','RESPOSTA','ANEXO'];
+            const novosTitulos = [];
             for(let linha of linhas) {
                 linha = linha.trim();
-                if(!linha || linha.length < 3) continue;
-                const limpa = linha.replace(/<[^>]*>/g, '');
-                const temPalavraChave = palavrasChave.some(pc => limpa.toUpperCase().includes(pc));
-                if(temPalavraChave && limpa.length < 100) {
-                    encontrados.push({ texto: limpa, nivel: 1 });
+                if(linha.length < 3 || linha.length > 150) continue;
+                const upper = linha.toUpperCase();
+                const temKeyword = palavrasChave.some(p => upper.includes(p));
+                const temNumero = /^\d+\./.test(linha);
+                const temNegrito = linha.includes('**') || linha.includes('*'); // simulação, pois no texto puro não há negrito
+                if(temKeyword || temNumero) {
+                    let nivel = (temNumero && linha.match(/\./g)?.length === 1) ? 1 : 2;
+                    novosTitulos.push({ texto: linha, nivel });
                 }
             }
-        }
-        
-        return encontrados;
-    }
-    
-    function buscarTitulosEsquecidos() {
-        if(!arquivoSelecionado) {
-            mostrarErro('❌ Nenhum documento processado.');
-            return;
-        }
-        
-        mostrarProgresso(true, 'Buscando títulos adicionais...');
-        
-        setTimeout(() => {
-            const novos = extrairTitulos();
-            const existentes = new Set(listaTitulos.map(t => t.texto));
-            const adicionados = novos.filter(t => !existentes.has(t.texto));
-            
-            if(adicionados.length === 0) {
-                mostrarSucesso('🔍 Nenhum título novo foi encontrado!');
+            if(novosTitulos.length > 0) {
+                titulos = novosTitulos;
+                titulosList.innerHTML = titulos.map(t => `<div style="margin-bottom:6px;">▪️ Nível ${t.nivel}: ${t.texto.substring(0,80)}</div>`).join('');
+                titulosBox.classList.remove('hidden');
             } else {
-                listaTitulos.push(...adicionados);
-                renderizarListaTitulos();
-                mostrarSucesso(`✅ ${adicionados.length} novo(s) título(s) adicionado(s)!`);
+                titulosBox.classList.add('hidden');
             }
-            mostrarProgresso(false);
-        }, 100);
-    }
-    
-    function adicionarTituloManual() {
-        const texto = novoTituloInput.value.trim();
-        if(!texto) {
-            mostrarErro('❌ Digite o título que deseja adicionar.');
-            return;
         }
-        
-        const nivel = parseInt(nivelTituloSelect.value);
-        
-        if(listaTitulos.some(t => t.texto === texto)) {
-            mostrarErro('❌ Este título já está na lista.');
-            return;
-        }
-        
-        listaTitulos.push({ texto: texto, nivel: nivel, manual: true });
-        renderizarListaTitulos();
-        novoTituloInput.value = '';
-        mostrarSucesso(`✅ Título "${texto}" adicionado!`);
-    }
-    
-    function removerTitulo(indice) {
-        const removido = listaTitulos[indice].texto;
-        listaTitulos.splice(indice, 1);
-        renderizarListaTitulos();
-        mostrarSucesso(`✅ Título "${removido}" removido.`);
-    }
-    
-    function editarTitulo(indice) {
-        const novoTxt = prompt('Editar título:', listaTitulos[indice].texto);
-        if(novoTxt && novoTxt.trim()) {
-            listaTitulos[indice].texto = novoTxt.trim();
-            renderizarListaTitulos();
-            mostrarSucesso(`✅ Título atualizado.`);
-        }
-    }
-    
-    function renderizarListaTitulos() {
-        if(!titulosList) return;
-        
-        if(listaTitulos.length === 0) {
-            titulosList.innerHTML = '<p style="text-align:center;color:#999;padding:30px;">Nenhum título detectado. Clique em "Buscar títulos esquecidos" ou adicione manualmente.</p>';
-            if(titulosCount) titulosCount.textContent = '0';
-            return;
-        }
-        
-        if(titulosCount) titulosCount.textContent = listaTitulos.length;
-        
-        titulosList.innerHTML = listaTitulos.map((t, idx) => `
-            <div class="titulo-item">
-                <div class="titulo-nivel">Nível ${t.nivel}</div>
-                <div class="titulo-texto">
-                    ${escapeHtml(t.texto)}
-                    ${t.manual ? '<span style="font-size:10px;color:#4CAF50;"> (adicionado)</span>' : ''}
-                </div>
-                <div class="titulo-acoes">
-                    <button onclick="window.editarTitulo(${idx})" title="Editar">✏️</button>
-                    <button onclick="window.removerTitulo(${idx})" title="Remover">🗑️</button>
-                </div>
-            </div>
-        `).join('');
-    }
-    
-    window.editarTitulo = editarTitulo;
-    window.removerTitulo = removerTitulo;
-    
-    // ==================== GERAR PDF - SOLUÇÃO DEFINITIVA ====================
-    async function gerarPDF() {
-        if(!arquivoSelecionado) {
-            mostrarErro('❌ Nenhum arquivo selecionado.');
-            return;
-        }
-        
-        const nomePDF = pdfNameInput.value.trim();
-        if(!nomePDF) {
-            mostrarErro('❌ Digite um nome para o arquivo PDF.');
-            return;
-        }
-        
-        btnFormatar.classList.add('hidden');
-        mostrarProgresso(true, 'Preparando documento para PDF...');
-        esconderErroSucesso();
-        
-        try {
-            // 1. Obter o conteúdo do documento
-            let conteudoFinal = '';
-            
-            if(htmlOriginal && htmlOriginal.length > 50) {
-                // Usar HTML se disponível
-                conteudoFinal = htmlOriginal;
-                console.log('Usando HTML para PDF, tamanho:', conteudoFinal.length);
-            } else if(textoPuro && textoPuro.length > 50) {
-                // Converter texto puro para HTML
-                conteudoFinal = `<div style="white-space: pre-wrap; font-family: Arial, sans-serif; font-size: 12pt;">${escapeHtml(textoPuro)}</div>`;
-                console.log('Usando texto puro para PDF, tamanho:', textoPuro.length);
-            } else {
-                // Tentar ler o arquivo novamente como último recurso
-                mostrarProgresso(true, 'Tentando extrair conteúdo novamente...');
-                const arrayBuffer = await lerArquivo(arquivoSelecionado);
-                const textoResult = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
-                if(textoResult.value && textoResult.value.length > 50) {
-                    conteudoFinal = `<div style="white-space: pre-wrap; font-family: Arial, sans-serif; font-size: 12pt;">${escapeHtml(textoResult.value)}</div>`;
-                } else {
-                    throw new Error('Não foi possível extrair nenhum conteúdo do documento.');
+
+        async function gerarPDF() {
+            if(!arquivoAtual || !textoExtraido) {
+                mostrarStatus('Nenhum documento carregado.', 'error');
+                return;
+            }
+            const nomePDF = pdfNameInput.value.trim();
+            if(!nomePDF) {
+                mostrarStatus('Digite um nome para o PDF.', 'error');
+                return;
+            }
+
+            loadingDiv.classList.remove('hidden');
+            gerarBtn.disabled = true;
+
+            try {
+                // Construir o HTML do documento ABNT
+                const titulosHtml = gerarSumarioHtml();
+                const conteudoHtml = textoExtraido.split(/\r?\n/).map(par => `<p>${escapeHtml(par)}</p>`).join('');
+                const docHtml = `
+                    <!DOCTYPE html>
+                    <html>
+                    <head><meta charset="UTF-8"><title>${escapeHtml(nomePDF)}</title>
+                    <style>
+                        @page { size: A4; margin: 3cm 2cm 2cm 3cm; }
+                        body { font-family: 'Times New Roman', Arial, sans-serif; font-size: 12pt; line-height: 1.5; text-align: justify; margin: 0; padding: 0; }
+                        h1 { font-size: 14pt; text-align: center; text-transform: uppercase; margin: 20pt 0; }
+                        p { text-indent: 1.25cm; margin: 0 0 6pt; }
+                        .sumario { margin: 20pt 0; }
+                        .sumario h2 { text-align: center; text-transform: uppercase; }
+                        .sumario ul { list-style: none; padding-left: 0; }
+                        .sumario li { margin-bottom: 4pt; }
+                        .page-break { page-break-before: always; }
+                    </style>
+                    </head>
+                    <body>
+                        <h1>${escapeHtml(nomePDF)}</h1>
+                        <div class="sumario">${titulosHtml}</div>
+                        <div class="page-break"></div>
+                        ${conteudoHtml}
+                    </body>
+                    </html>
+                `;
+
+                // Criar um elemento temporário para renderizar
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = docHtml;
+                tempDiv.style.position = 'absolute';
+                tempDiv.style.left = '0';
+                tempDiv.style.top = '0';
+                tempDiv.style.width = '210mm';
+                tempDiv.style.background = 'white';
+                tempDiv.style.zIndex = '-1';
+                tempDiv.style.opacity = '0.01';
+                document.body.appendChild(tempDiv);
+
+                // Usar html2canvas + jsPDF
+                const canvas = await html2canvas(tempDiv, { scale: 2, backgroundColor: '#ffffff' });
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgWidth = 210; // A4 largura em mm
+                const pageHeight = 297;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                let position = 0;
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                if (imgHeight > pageHeight) {
+                    let remaining = imgHeight - pageHeight;
+                    let offset = pageHeight;
+                    while (remaining > 0) {
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'PNG', 0, -offset, imgWidth, imgHeight);
+                        offset += pageHeight;
+                        remaining -= pageHeight;
+                    }
                 }
-            }
-            
-            // 2. Gerar sumário
-            const sumarioHtml = gerarSumarioHtml();
-            
-            // 3. Montar documento ABNT completo
-            const documentoCompleto = montarDocumentoAbnt(conteudoFinal, nomePDF, sumarioHtml);
-            
-            // 4. VERIFICAR se o documento tem conteúdo antes de gerar PDF
-            if(documentoCompleto.length < 500) {
-                throw new Error('Documento gerado está vazio. Verifique o arquivo de origem.');
-            }
-            
-            console.log('Documento HTML gerado, tamanho:', documentoCompleto.length);
-            
-            // 5. Criar container temporário
-            mostrarProgresso(true, 'Renderizando PDF...');
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = documentoCompleto;
-            tempDiv.style.cssText = 'position: fixed; left: 0; top: 0; width: 210mm; background: white; z-index: -1; opacity: 0; pointer-events: none;';
-            document.body.appendChild(tempDiv);
-            
-            // 6. Configurar opções do PDF
-            const opcoes = {
-                margin: [25, 20, 20, 25],
-                filename: nomePDF + '.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { 
-                    scale: 2, 
-                    useCORS: true, 
-                    logging: false,
-                    backgroundColor: '#ffffff'
-                },
-                jsPDF: { 
-                    unit: 'mm', 
-                    format: 'a4', 
-                    orientation: 'portrait' 
-                }
-            };
-            
-            // 7. Gerar PDF
-            await html2pdf().set(opcoes).from(tempDiv).save();
-            
-            // 8. Limpar
-            document.body.removeChild(tempDiv);
-            
-            mostrarSucesso(`✅ PDF "${nomePDF}.pdf" gerado com sucesso! ${listaTitulos.length} títulos no sumário.`);
-            
-        } catch(err) {
-            console.error('Erro ao gerar PDF:', err);
-            mostrarErro('❌ Erro ao gerar PDF: ' + (err.message || 'Tente novamente com um arquivo diferente'));
-        } finally {
-            mostrarProgresso(false);
-            btnFormatar.classList.remove('hidden');
-        }
-    }
-    
-    function gerarSumarioHtml() {
-        if(!listaTitulos || listaTitulos.length === 0) {
-            return '<p style="text-align:center; font-family:Arial;">Nenhum título detectado para o sumário.</p>';
-        }
-        
-        let html = '<div style="margin: 30pt 0; font-family: Arial, sans-serif;">';
-        html += '<h2 style="text-align:center; text-transform:uppercase; font-size:14pt; font-weight:bold;">SUMÁRIO</h2>';
-        html += '<ul style="list-style:none; padding-left:0;">';
-        
-        listaTitulos.forEach(t => {
-            const margem = (t.nivel - 1) * 20;
-            html += `<li style="margin-left: ${margem}px; margin-bottom: 6px; font-size: 12pt;">${escapeHtml(t.texto)}</li>`;
-        });
-        
-        html += '</ul></div><div style="page-break-before: always;"></div>';
-        return html;
-    }
-    
-    function montarDocumentoAbnt(conteudo, titulo, sumario) {
-        // Garantir que o conteúdo não esteja vazio
-        const conteudoValido = conteudo && conteudo.length > 50 ? conteudo : '<p>O documento não possui conteúdo visível.</p>';
-        
-        return `<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>${escapeHtml(titulo)}</title>
-    <style>
-        @page { 
-            size: A4; 
-            margin: 3cm 2cm 2cm 3cm;
-        }
-        body { 
-            font-family: 'Times New Roman', Arial, Helvetica, sans-serif; 
-            font-size: 12pt; 
-            line-height: 1.5; 
-            text-align: justify; 
-            margin: 0; 
-            padding: 0;
-            background: white;
-            color: black;
-        }
-        h1, h2, h3, h4 { 
-            font-weight: bold; 
-            margin-top: 16pt; 
-            margin-bottom: 8pt; 
-            font-family: 'Times New Roman', Arial, sans-serif;
-        }
-        h1 { font-size: 14pt; text-align: center; text-transform: uppercase; }
-        h2 { font-size: 13pt; }
-        h3 { font-size: 12pt; margin-left: 1cm; }
-        p { 
-            margin: 0 0 6pt 0; 
-            text-indent: 1.25cm;
-            font-family: 'Times New Roman', Arial, sans-serif;
-        }
-        .no-indent { text-indent: 0; }
-        table { 
-            border-collapse: collapse; 
-            width: 100%; 
-            margin: 12pt 0;
-        }
-        th, td { 
-            border: 1px solid #000; 
-            padding: 6pt;
-            vertical-align: top;
-        }
-        img { 
-            max-width: 100%; 
-            height: auto; 
-            display: block; 
-            margin: 12pt auto;
-        }
-        blockquote { 
-            margin-left: 4cm; 
-            font-size: 10pt; 
-            line-height: 1.2;
-        }
-        ul, ol { 
-            margin: 6pt 0 6pt 2cm;
-        }
-        li {
-            margin-bottom: 2pt;
-        }
-    </style>
-</head>
-<body>
-    <div style="text-align:center; font-size:14pt; font-weight:bold; margin-bottom:30pt; font-family:'Times New Roman', Arial;">
-        ${escapeHtml(titulo)}
-    </div>
-    ${sumario}
-    ${conteudoValido}
-</body>
-</html>`;
-    }
-    
-    // ==================== UTILITÁRIOS ====================
-    function lerArquivo(file) {
-        return new Promise((resolve, reject) => {
-            const leitor = new FileReader();
-            leitor.onload = () => resolve(leitor.result);
-            leitor.onerror = () => reject(new Error('Falha ao ler o arquivo'));
-            leitor.readAsArrayBuffer(file);
-        });
-    }
-    
-    function escapeHtml(texto) {
-        if(!texto) return '';
-        const div = document.createElement('div');
-        div.textContent = texto;
-        return div.innerHTML;
-    }
-    
-    function mostrarErro(msg) {
-        if(errorMsg) {
-            errorMsg.textContent = msg;
-            errorMsg.classList.remove('hidden');
-            if(successMsg) successMsg.classList.add('hidden');
-            setTimeout(() => errorMsg.classList.add('hidden'), 6000);
-        }
-    }
-    
-    function mostrarSucesso(msg) {
-        if(successMsg) {
-            successMsg.textContent = msg;
-            successMsg.classList.remove('hidden');
-            if(errorMsg) errorMsg.classList.add('hidden');
-            setTimeout(() => successMsg.classList.add('hidden'), 5000);
-        }
-    }
-    
-    function esconderErroSucesso() {
-        if(errorMsg) errorMsg.classList.add('hidden');
-        if(successMsg) successMsg.classList.add('hidden');
-    }
-    
-    function mostrarProgresso(mostrar, texto = 'Processando...') {
-        if(progressArea) {
-            if(mostrar) {
-                progressArea.classList.remove('hidden');
-                if(progressText) progressText.textContent = texto;
-                if(btnFormatar) btnFormatar.classList.add('hidden');
-            } else {
-                progressArea.classList.add('hidden');
+                pdf.save(nomePDF + '.pdf');
+
+                document.body.removeChild(tempDiv);
+                mostrarStatus(`✅ PDF "${nomePDF}.pdf" gerado com sucesso!`, 'success');
+            } catch(err) {
+                console.error(err);
+                mostrarStatus('❌ Falha ao gerar PDF. Tente usar "Salvar como PDF" pelo navegador (Ctrl+P).', 'error');
+                // Fallback: abrir janela de impressão
+                const fallbackHtml = `
+                    <html><head><title>${nomePDF}</title>
+                    <style>body { font-family: Arial; margin: 2cm; } p { text-indent: 1.25cm; }</style>
+                    </head><body><h1>${nomePDF}</h1><pre>${escapeHtml(textoExtraido)}</pre></body></html>
+                `;
+                const win = window.open();
+                win.document.write(fallbackHtml);
+                win.document.close();
+                win.print();
+            } finally {
+                loadingDiv.classList.add('hidden');
+                gerarBtn.disabled = false;
             }
         }
-    }
-    
-    function resetarEstado() {
-        arquivoSelecionado = null;
-        htmlOriginal = null;
-        textoPuro = null;
-        listaTitulos = [];
-        if(fileInput) fileInput.value = '';
-        if(fileInfo) fileInfo.classList.add('hidden');
-        if(nameGroup) nameGroup.classList.add('hidden');
-        if(titulosSection) titulosSection.classList.add('hidden');
-        if(btnFormatar) btnFormatar.classList.add('hidden');
-        if(progressArea) progressArea.classList.add('hidden');
-        esconderErroSucesso();
-    }
-})();
+
+        function gerarSumarioHtml() {
+            if(titulos.length === 0) return '<p>Nenhum título detectado.</p>';
+            let html = '<h2>SUMÁRIO</h2><ul>';
+            for(let t of titulos) {
+                html += `<li style="margin-left:${(t.nivel-1)*20}px">${escapeHtml(t.texto)}</li>`;
+            }
+            html += '</ul>';
+            return html;
+        }
+
+        function escapeHtml(str) {
+            if(!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if(m === '&') return '&amp;';
+                if(m === '<') return '&lt;';
+                if(m === '>') return '&gt;';
+                return m;
+            }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+                return c;
+            });
+        }
+    })();
 </script>
 </body>
 </html>
